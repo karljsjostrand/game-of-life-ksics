@@ -1,0 +1,6 @@
+﻿4 Rules:
+  
+  Any cell with neighbours < 2 dies
+  Any cell with neighbours == 2 || 3 lives
+  Any cell with neighbours > 3 dies
+  Any space with neighbours == 3 create
