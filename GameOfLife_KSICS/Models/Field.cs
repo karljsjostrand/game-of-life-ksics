@@ -13,7 +13,7 @@
       SetupCells(width, height);
     }
 
-    public void SetupCells(int width, int height)
+    public void SetupCells(int width, int height) // TODO: should this be in controller?
     {
       Cells = new Cell[width, height];
 
