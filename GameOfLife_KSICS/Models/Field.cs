@@ -6,16 +6,24 @@
 
   class Field
   {
-    Cell[,] Cells { get; set; }
+    public Cell[,] Cells { get; private set; }
 
     public Field(int width, int height)
     {
-      Cells = new Cell[width, height];
+      SetupCells(width, height);
     }
 
-    public bool AddCell(int x, int y)
+    public void SetupCells(int width, int height)
     {
-      throw new NotImplementedException();
+      Cells = new Cell[width, height];
+
+      for (int y = 0; y < height; y++)
+      {
+        for (int x = 0; x < width; x++)
+        {
+          Cells[x, y] = new Cell();
+        }
+      }
     }
   }
 }

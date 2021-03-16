@@ -1,9 +1,12 @@
-﻿4 Rules:
+﻿Rules:
   
-  Any cell with neighbours < 2 dies
-  Any cell with neighbours == 2 || 3 lives
-  Any cell with neighbours > 3 dies
-  Any space with neighbours == 3 create
+  Any cell with neighbours < 2        dead
+  Any cell with neighbours == 2 || 3  alive
+  Any cell with neighbours > 3        dead
+  Any cell with neighbours == 3       alive
 
-  Create a new GameOfLife with a field as input
-    Start
+Game flow >>>
+  Create a new GameOfLife object with a field as input (read a field from text file?)
+    Has a field filled with cells, some are alive, and most are dead
+  Start the game and watch it run...(?)
+    Update is called once per second to progress the game
