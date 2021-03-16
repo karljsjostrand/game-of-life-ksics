@@ -8,7 +8,7 @@
   class GameOfLife
   {
     /// <summary>
-    /// Create an instance of GameOfLife with a field of randomized width and height and randomized cells. 
+    /// Create an instance of GameOfLife with a starting field of randomized width, height, and cells. 
     /// </summary>
     public GameOfLife()
     {
@@ -18,15 +18,17 @@
     /// <summary>
     /// Create an instance of GameOfLife with a field of given width and height and randomized cells.
     /// </summary>
+    /// <param name="width">Width of starting field in number of cells.</param>
+    /// <param name="height">Height of starting field in number of cells.</param>
     public GameOfLife(int width, int height)
     {
       throw new NotImplementedException();
     }
 
     /// <summary>
-    /// Create an instance of GameOfLife with starting field provided as parameter.
+    /// Create an instance of GameOfLife with given starting field.
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="field">Starting field.</param>
     public GameOfLife(Field field)
     {
       throw new NotImplementedException();
@@ -43,7 +45,7 @@
     }
 
     /// <summary>
-    /// Progresses to next generation. 
+    /// Progress to next generation. 
     /// </summary>
     public void NextGeneration()
     {
@@ -51,7 +53,7 @@
     }
 
     /// <summary>
-    /// Run the game until all cells are dead (or only states remain?).
+    /// Progress until all cells are dead (or only 2 states remain?).
     /// </summary>
     public void Run()
     {
