@@ -4,3 +4,6 @@
   Any cell with neighbours == 2 || 3 lives
   Any cell with neighbours > 3 dies
   Any space with neighbours == 3 create
+
+  Create a new GameOfLife with a field as input
+    Start

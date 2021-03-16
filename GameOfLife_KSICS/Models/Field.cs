@@ -12,5 +12,10 @@
     {
       Cells = new Cell[width, height];
     }
+
+    public bool AddCell(int x, int y)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
