@@ -8,8 +8,12 @@ namespace GameOfLife_KSICS.Models.Tests
   public class FieldTests
   {
     Field _field;
-    (int, int) CenteredCellPosition;
-    (int, int) EdgeCellPosition;
+    (int, int) _centeredCellPosition;
+    (int, int) _edgeCellPosition;
+    (int, int) _topLeftCornerCellPosition;
+    (int, int) _topRightCornerCellPosition;
+    (int, int) _btmLeftCornerCellPosition;
+    (int, int) _btmRightCornerCellPosition;
 
     [SetUp()]
     public void Setup()
@@ -19,8 +23,12 @@ namespace GameOfLife_KSICS.Models.Tests
 
       _field = new Field(fieldWidth, fieldHeight);
 
-      CenteredCellPosition = (fieldWidth / 2, fieldHeight / 2);
-      EdgeCellPosition = (fieldWidth, fieldHeight);
+      _centeredCellPosition = (fieldWidth / 2, fieldHeight / 2);
+      //_edgeCellPosition = (fieldWidth - 1, fieldHeight - 1); // TODO: remove
+      _topLeftCornerCellPosition = (0, 0);
+      _topRightCornerCellPosition = (fieldWidth - 1, 0);
+      _btmLeftCornerCellPosition = (0, fieldHeight - 1);
+      _btmRightCornerCellPosition = (fieldWidth - 1, fieldHeight - 1);
     }
 
     /// <summary>
@@ -29,8 +37,8 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldReturnZero_WhenNoNeighourAlive()
     {
-      var x = 40;
-      var y = 20;
+      var x = _centeredCellPosition.Item1;
+      var y = _centeredCellPosition.Item2;
       var expected = 0;
       var actual = _field.GetNeighourCount(x, y);
 
@@ -38,18 +46,18 @@ namespace GameOfLife_KSICS.Models.Tests
     }
 
     [Test()]
-    [TestCase(40, 19)] // above, 12 o clock
+    [TestCase(40, 19)] // above neighbour, 12 o clock
     [TestCase(41, 19)] // 13:30
-    [TestCase(41, 20)] // 15
+    [TestCase(41, 20)] // right, 15
     [TestCase(41, 21)] // 16:30
-    [TestCase(40, 21)] // 18
+    [TestCase(40, 21)] // below, 18
     [TestCase(39, 21)] // 19:30
-    [TestCase(39, 20)] // 21
+    [TestCase(39, 20)] // left, 21
     [TestCase(39, 19)] // 22:30
     public void GetNeighourCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
     {
-      var x = 40;
-      var y = 20;
+      var x = _centeredCellPosition.Item1;
+      var y = _centeredCellPosition.Item2;
 
       _field.Cells[neighbourX, neighbourY].Alive = true;
 
@@ -62,8 +70,8 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
     {
-      var x = 40;
-      var y = 20;
+      var x = _centeredCellPosition.Item1;
+      var y = _centeredCellPosition.Item2;
 
       _field.Cells[41, 19].Alive = true; // 13:30
       _field.Cells[41, 20].Alive = true; // 15
@@ -78,17 +86,12 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldIgnoreNeighbour_WhenNeighbourIsOutOfBounds()
     {
-      var x = EdgeCellPosition.Item1;
-      var y = EdgeCellPosition.Item2;
+      var position = _topRightCornerCellPosition;
 
-      try
-      {
-        _field.GetNeighourCount(x, y);
-      }
-      catch (Exception)
-      {
-        Assert.Fail();
-      }
+      var x = position.Item1;
+      var y = position.Item2;
+
+      _field.GetNeighourCount(x, y);
     }
   }
 }
