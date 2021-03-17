@@ -5,8 +5,10 @@
   using System.Collections.Generic;
   using System.Text;
 
-  class GameOfLife
+  public class GameOfLife
   {
+    private Field Field { get; set; }
+
     /// <summary>
     /// Create an instance of GameOfLife with a starting field of randomized width, height, and cells. 
     /// </summary>
