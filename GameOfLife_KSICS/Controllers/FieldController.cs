@@ -7,16 +7,5 @@
 
   class FieldController
   {
-    Field Field { get; }
-
-    public FieldController(int width, int height)
-    {
-      Field = new Field(width, height);
-    }
-
-    public void Update()
-    {
-      
-    }
   }
 }

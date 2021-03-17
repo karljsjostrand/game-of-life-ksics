@@ -35,18 +35,9 @@
     {
       foreach (var cell in Cells)
       {
-        var neighbourCount = GetNeighourCount(cell.X, cell.Y);
+        var neighbourCount = GetNeighbourCount(cell.X, cell.Y);
 
         UpdateCell(cell.X, cell.Y, neighbourCount); // TODO
-
-        //switch (neighbourCount)
-        //{
-        //  case 3:
-        //    cell.Alive = true;
-        //    break;
-        //  default:
-        //    break;
-        //}
       }
     }
 
@@ -55,19 +46,19 @@
     /// </summary>
     /// <param name="cell"></param>
     /// <returns></returns>
-    public int GetNeighourCount(int x, int y)
+    public int GetNeighbourCount(int x, int y)
     {
       var count = 0;
 
       // Clockwise, starting at 12
-      if (HasLivingCellAt(x,     y - 1)) count++; // 12
-      if (HasLivingCellAt(x + 1, y - 1)) count++; // 13:30
-      if (HasLivingCellAt(x + 1,     y)) count++; // 15
-      if (HasLivingCellAt(x + 1, y + 1)) count++; // 16:30
-      if (HasLivingCellAt(x,     y + 1)) count++; // 18
-      if (HasLivingCellAt(x - 1, y + 1)) count++; // 19:30
-      if (HasLivingCellAt(x - 1,     y)) count++; // 21
-      if (HasLivingCellAt(x - 1, y - 1)) count++; // 22:30
+      if (IsLivingCellAt(x,     y - 1)) count++; // 12
+      if (IsLivingCellAt(x + 1, y - 1)) count++; // 13:30
+      if (IsLivingCellAt(x + 1, y    )) count++; // 15
+      if (IsLivingCellAt(x + 1, y + 1)) count++; // 16:30
+      if (IsLivingCellAt(x,     y + 1)) count++; // 18
+      if (IsLivingCellAt(x - 1, y + 1)) count++; // 19:30
+      if (IsLivingCellAt(x - 1, y    )) count++; // 21
+      if (IsLivingCellAt(x - 1, y - 1)) count++; // 22:30
 
       return count;
     }
@@ -78,18 +69,16 @@
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
     /// <returns>
-    /// true if cell is alive, false if it isn't or positions are out of bounds.
+    /// true if cell is alive, false if it isn't or position is out of bounds.
     /// </returns>
-    private bool HasLivingCellAt(int x, int y)
+    private bool IsLivingCellAt(int x, int y)
     {
-      // if position is out of bounds
+      // If position is out of bounds.
       if (x < 0 || x >= Width) return false;
       if (y < 0 || y >= Height) return false;
 
       return Cells[x, y].Alive;
     }
-
-
 
     /// <summary>
     /// 
