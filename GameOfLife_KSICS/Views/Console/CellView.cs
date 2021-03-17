@@ -1,12 +1,12 @@
-﻿namespace GameOfLife_KSICS.Views
+﻿namespace GameOfLife_KSICS.Views.Console
 {
   using GameOfLife_KSICS.Controllers;
   using System;
   using System.Collections.Generic;
   using System.Text;
 
-  class FieldView
+  class CellView
   {
-    FieldController FieldController { get; set; }
+    CellController CellController { get; set; }
   }
 }
