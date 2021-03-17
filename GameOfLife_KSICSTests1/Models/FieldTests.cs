@@ -1,12 +1,15 @@
 ﻿using NUnit.Framework;
 using GameOfLife_KSICS.Models;
 using System;
+using System.Collections.Generic;
 
 namespace GameOfLife_KSICS.Models.Tests
 {
   [TestFixture()]
   public class FieldTests
   {
+    int _fieldWidth => 80;
+    static int _fieldHeight = 40;
     Field _field;
     (int, int) _centeredCellPosition;
     (int, int) _edgeCellPosition;
@@ -18,17 +21,14 @@ namespace GameOfLife_KSICS.Models.Tests
     [SetUp()]
     public void Setup()
     {
-      var fieldWidth = 80;
-      var fieldHeight = 40;
+      _field = new Field(_fieldWidth, _fieldHeight);
 
-      _field = new Field(fieldWidth, fieldHeight);
-
-      _centeredCellPosition = (fieldWidth / 2, fieldHeight / 2);
+      _centeredCellPosition = (_fieldWidth / 2, _fieldHeight / 2);
       //_edgeCellPosition = (fieldWidth - 1, fieldHeight - 1); // TODO: remove
       _topLeftCornerCellPosition = (0, 0);
-      _topRightCornerCellPosition = (fieldWidth - 1, 0);
-      _btmLeftCornerCellPosition = (0, fieldHeight - 1);
-      _btmRightCornerCellPosition = (fieldWidth - 1, fieldHeight - 1);
+      _topRightCornerCellPosition = (_fieldWidth - 1, 0);
+      _btmLeftCornerCellPosition = (0, _fieldHeight - 1);
+      _btmRightCornerCellPosition = (_fieldWidth - 1, _fieldHeight - 1);
     }
 
     /// <summary>
@@ -86,12 +86,45 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldIgnoreNeighbour_WhenNeighbourIsOutOfBounds()
     {
-      var position = _topRightCornerCellPosition;
+      var edgePositions = new List<(int, int)>()
+      {
+        _topLeftCornerCellPosition,
+        _topRightCornerCellPosition,
+        _btmLeftCornerCellPosition,
+        _btmRightCornerCellPosition,
+      };
 
-      var x = position.Item1;
-      var y = position.Item2;
+      foreach (var position in edgePositions)
+      {
+        var x = position.Item1;
+        var y = position.Item2;
+        _field.GetNeighourCount(x, y);
+      }
+    }
 
-      _field.GetNeighourCount(x, y);
+    [Test()]
+    [TestCase(-1, -1)]
+    [TestCase(0, 41)]
+    [TestCase(81, 41)]
+    [TestCase(81, 0)]
+    public void GetNeighourCountTest_ShouldReturnZero_WhenOutOfBoundsPositions(int x, int y)
+    {
+      var expected = 0;
+      var actual = _field.GetNeighourCount(x, y);
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    [Test()]
+    public void UpdateCellTest_ShouldSetToAlive_WhenThreeNeighbours()
+    {
+      var position = _centeredCellPosition;
+
+      //var neighbour1 = (position.Item1 + 1, position.Item2); // to the right
+      //var neighbour2 = (position.Item1, position.Item2 + 1); // below
+      //var neighbour3 = (position.Item1, position.Item2 - 1); // above
+
+      _field.UpdateCell(_centeredCellPosition.Item1, _centeredCellPosition.Item2, 3);
     }
   }
 }
