@@ -35,7 +35,9 @@
     {
       foreach (var cell in Cells)
       {
-        //var neighbourCount = GetNeighourCount(cell);
+        var neighbourCount = GetNeighourCount(cell.X, cell.Y);
+
+        UpdateCell(cell.X, cell.Y, neighbourCount); // TODO
 
         //switch (neighbourCount)
         //{
@@ -56,60 +58,6 @@
     public int GetNeighourCount(int x, int y)
     {
       var count = 0;
-
-      //if (x == 0 || y == 0 || x == Width || y == Height)
-      //{
-      //  if (y == 0) // top
-      //  {
-      //    if (x == 0) // left edge
-      //    {
-
-      //    }
-      //    else if (x == Width) // right edge
-      //    {
-
-      //    }
-      //    else // not on either vertical edge
-      //    {
-
-      //    }
-      //  }
-      //  if (y == Height) // btm
-      //  {
-      //    if (x == 0) // left edge
-      //    {
-
-      //    }
-      //    else if (x == Width) // right edge
-      //    {
-
-      //    }
-      //    else // not on either vertical edge
-      //    {
-
-      //    }
-      //  }
-      //  if (x == 0) // left edge
-      //  {
-
-      //  }
-      //  if (x == Width) // right edge
-      //  {
-
-      //  } 
-      //}
-      //else // not on any edge
-      //{
-      //  // Clockwise, starting at 12
-      //if (Cells[x, y - 1].Alive) count++; // 12
-      //if (Cells[x + 1, y - 1].Alive) count++; // 13:30
-      //if (Cells[x + 1, y].Alive) count++; // 15
-      //if (Cells[x + 1, y + 1].Alive) count++; // 16:30
-      //if (Cells[x, y + 1].Alive) count++; // 18
-      //if (Cells[x - 1, y + 1].Alive) count++; // 19:30
-      //if (Cells[x - 1, y].Alive) count++; // 21
-      //if (Cells[x - 1, y - 1].Alive) count++; // 22:30
-      //}
 
       // Clockwise, starting at 12
       if (HasLivingCellAt(x,     y - 1)) count++; // 12
@@ -134,15 +82,37 @@
     /// </returns>
     private bool HasLivingCellAt(int x, int y)
     {
-      if (x < 0 || x > Width) return false;
-      if (y < 0 || y > Height) return false;
+      // if position is out of bounds
+      if (x < 0 || x >= Width) return false;
+      if (y < 0 || y >= Height) return false;
 
       return Cells[x, y].Alive;
     }
 
-    public void UpdateCell(Cell cell, int neighboursCount)
-    {
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="neighboursCount"></param>
+    public void UpdateCell(int x, int y, int neighboursCount)
+    {
+      throw new NotImplementedException();
+
+      if (neighboursCount < 2)
+      {
+
+      }
+      else if (neighboursCount == 2 || neighboursCount == 3)
+      {
+
+      }
+      else
+      {
+        // dead
+      }
     }
   }
 }
