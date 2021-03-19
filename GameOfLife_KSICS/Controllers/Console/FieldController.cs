@@ -1,4 +1,4 @@
-﻿namespace GameOfLife_KSICS.Controllers
+﻿namespace GameOfLife_KSICS.Controllers.Console
 {
   using GameOfLife_KSICS.Models;
   using System;
@@ -7,5 +7,6 @@
 
   class FieldController
   {
+    private Field Field { get; set; }
   }
 }

@@ -1,10 +1,11 @@
-﻿namespace GameOfLife_KSICS.Views.Console
+﻿namespace GameOfLife_KSICS.Utils
 {
   using System;
   using System.Collections.Generic;
   using System.Text;
 
-  class CellView
+  class FieldFile
   {
+
   }
 }

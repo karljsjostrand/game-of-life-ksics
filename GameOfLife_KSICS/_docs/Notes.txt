@@ -3,7 +3,6 @@
   Any cell with neighbours < 2        dead
   Any cell with neighbours == 2 || 3  alive
   Any cell with neighbours > 3        dead
-  Any cell with neighbours == 3       alive
 
 Game flow >>>
   Create a new GameOfLife object with a field as input (read a field from text file?)

@@ -6,7 +6,8 @@
 
   public class Field
   {
-    public Cell[,] Cells { get; private set; }
+    public Cell[,] Cells { get; set; }
+    public Cell[,] NextCells { get; set; }
 
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -15,38 +16,35 @@
     {
       Width = width;
       Height = height;
-      SetupCells(width, height);
+      Cells = InitializeCells(Cells, width, height);
     }
 
-    private void SetupCells(int width, int height) // TODO: should this be in controller?
+    public Cell[,] InitializeCells(Cell[,] cells, int width, int height)
     {
-      Cells = new Cell[width, height];
+      cells = new Cell[width, height];
 
       for (int y = 0; y < height; y++)
       {
         for (int x = 0; x < width; x++)
         {
-          Cells[x, y] = new Cell(x, y);
+          cells[x, y] = new Cell(x, y);
         }
       }
+
+      return cells;
     }
 
-    public void NextGeneration()
-    {
-      foreach (var cell in Cells)
-      {
-        var neighbourCount = GetNeighbourCount(cell.X, cell.Y);
-
-        UpdateCell(cell.X, cell.Y, neighbourCount); // TODO
-      }
-    }
 
     /// <summary>
-    /// Get a cells number of living neighbours. (0 to 8)
+    /// Get a cells number of living neighbours. 
     /// </summary>
-    /// <param name="cell"></param>
-    /// <returns></returns>
-    public int GetNeighbourCount(int x, int y)
+    /// <param name="x">Horizontal position on the field.</param>
+    /// <param name="y">Vertical position on the field.</param>
+    /// <returns>
+    /// Amount of neighbours alive next to this position, 
+    /// vertically, horizontally, or diagonally, 0 to 8. 
+    /// </returns>
+    public int GetNeighbourCount(int x, int y) 
     {
       var count = 0;
 
@@ -81,27 +79,35 @@
     }
 
     /// <summary>
-    /// 
+    /// Update the cell at this position using a set of rules 
+    /// based on it's count of neighbours alive.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="neighboursCount"></param>
-    public void UpdateCell(int x, int y, int neighboursCount)
+    public Cell UpdateCell(int x, int y, int neighboursCount)
     {
-      throw new NotImplementedException();
+      var nextCell = new Cell(x, y);
 
       if (neighboursCount < 2)
       {
-
+        nextCell.Alive = false;
       }
-      else if (neighboursCount == 2 || neighboursCount == 3)
+      else if (neighboursCount == 2 && Cells[x, y].Alive)
       {
-
+        nextCell.Alive = true;
       }
+      else if (neighboursCount == 3)
+      {
+        nextCell.Alive = true;
+      }
+      // Overpopulation
       else
       {
-        // dead
+        nextCell.Alive = false;
       }
+
+      return nextCell;
     }
   }
 }

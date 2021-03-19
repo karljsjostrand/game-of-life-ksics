@@ -7,7 +7,7 @@
 
   public class GameOfLife
   {
-    private Field Field { get; set; }
+    public Field Field { get; private set; }
 
     /// <summary>
     /// Create an instance of GameOfLife with a starting field of randomized width, height, and cells. 
@@ -33,7 +33,7 @@
     /// <param name="field">Starting field.</param>
     public GameOfLife(Field field)
     {
-      throw new NotImplementedException();
+      Field = field;
     }
 
     /// <summary>
@@ -44,14 +44,49 @@
     public bool SaveFieldToFile(string path)
     {
       throw new NotImplementedException();
+
+      var fileName = DateTime.Now + ".txt";
+
+      var fileContents = "";
+
+      // Create a string representation of the fields alive states.
+      for (int y = 0; y < Field.Height; y++)
+      {
+        for (int x = 0; x < Field.Width; x++)
+        {
+          fileContents += Convert.ToInt32(Field.Cells[x, y].Alive);
+        }
+        fileContents += "\n";
+      }
+
+      // TODO
     }
 
     /// <summary>
     /// Progress to next generation. 
+    /// 
+    /// 0111
+    /// 0000
+    /// 
+    /// becomes
+    /// 
+    /// 0010
+    /// 0010
     /// </summary>
     public void NextGeneration()
     {
-      throw new NotImplementedException();
+      Field.NextCells = Field.InitializeCells(Field.NextCells, Field.Width, Field.Height);
+
+      for (int y = 0; y < Field.Height; y++)
+      {
+        for (int x = 0; x < Field.Width; x++)
+        {
+          var neighbourCount = Field.GetNeighbourCount(x, y);
+          Field.NextCells[x, y] = Field.UpdateCell(x, y, neighbourCount);
+        }
+      }
+
+      Field.Cells = Field.NextCells;
     }
 
     /// <summary>
