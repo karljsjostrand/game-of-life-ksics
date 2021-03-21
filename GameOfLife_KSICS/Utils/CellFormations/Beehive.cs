@@ -6,22 +6,22 @@
   using System;
   using System.Collections.Generic;
   using System.Text;
-  using Utils;
 
-  class Glider : CellFormation
+  class Beehive : CellFormation
   {
-    public override (int Width, int Height) Size { get; } = (3, 3);
+    public override (int Width, int Height) Size { get; } = (4, 3);
 
     public override void AddCells()
     {
-      // coordinates shaping a glider formation
+      // coordinates forming a beehive formation
       Cells.AddRange(
         new List<(int x, int y)>()
         {
           (0, 1),
-          (1, 2),
+          (1, 0),
           (2, 0),
-          (2, 1),
+          (3, 1),
+          (1, 2),
           (2, 2),
         });
     }
