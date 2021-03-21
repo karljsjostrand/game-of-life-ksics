@@ -120,7 +120,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.UpdateCell(x, y, 3);
+      field.NextCell(x, y, 3);
 
       Assert.IsTrue(field.Cells[x, y].Alive);
     }
@@ -132,7 +132,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.UpdateCell(x, y, 2);
+      field.NextCell(x, y, 2);
 
       Assert.IsTrue(field.Cells[x, y].Alive);
     }
@@ -146,7 +146,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.UpdateCell(x, y, neighboursCount);
+      field.NextCell(x, y, neighboursCount);
 
       Assert.IsFalse(field.Cells[x, y].Alive);
     }
@@ -161,7 +161,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.UpdateCell(x, y, neighboursCount);
+      field.NextCell(x, y, neighboursCount);
 
       Assert.IsFalse(field.Cells[x, y].Alive);
     }

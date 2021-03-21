@@ -17,31 +17,11 @@
       //GameOfLifeFromDefinedField();
     }
 
-    private static void SaveFieldToFileExperiment()
-    {
-      var g = new GameOfLife(new Field(80, 40));
-
-      g.Field.Cells[1, 1].Alive = true;
-
-      var fileContents = "";
-
-      for (int y = 0; y < g.Field.Height; y++)
-      {
-        for (int x = 0; x < g.Field.Width; x++)
-        {
-          fileContents += Convert.ToInt32(g.Field.Cells[x, y].Alive);
-          //g.Field.Cells[x, y].X + "," + g.Field.Cells[x, y].Y + " "
-        }
-        fileContents += "\n";
-      }
-      Console.WriteLine(fileContents);
-    }
-
     static void GameOfLifeFromDefinedField()
     {
       var field = new Field(80, 40);
 
-      #region add some initial life to the field, TODO: move this to where field is created?
+      #region add some initial living cells to field
       // add blinker
       field.AddCellFormation(new Blinker(), (0, 10));
       field.AddCellFormation(new Blinker(), (0, 20));

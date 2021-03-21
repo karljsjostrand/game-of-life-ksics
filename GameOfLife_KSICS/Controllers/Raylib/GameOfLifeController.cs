@@ -12,18 +12,15 @@
   class GameOfLifeController
   {
     private GameOfLife GameOfLife { get; set; }
-
-    private static int windowWidth = 1200;
-    private static int windowHeight = 600;
     private static int targetFps = 10;
     private static int cellSizeInPixels = 16;
+
+    private int windowWidth => GameOfLife.Field.Width * cellSizeInPixels;
+    private int windowHeight => GameOfLife.Field.Height * cellSizeInPixels;
 
     public GameOfLifeController(GameOfLife gameOfLife)
     {
       GameOfLife = gameOfLife;
-
-      windowWidth = gameOfLife.Field.Width * cellSizeInPixels;
-      windowHeight = gameOfLife.Field.Height * cellSizeInPixels;
     }
 
     public void Start()
@@ -32,26 +29,68 @@
 
       Raylib.InitWindow(windowWidth, windowHeight, "Game of Life");
 
+      var update = true;
+
       while (!Raylib.WindowShouldClose())
       {
-        #region user input
-        // TODO: click cells to turn them alive or dead?
-        var mousePosition = Raylib.GetMousePosition();
+        #region Update
+        if (update) GameOfLife.NextGeneration();
+        #endregion
 
-        if (Raylib.IsKeyReleased(KeyboardKey.KEY_SPACE))
+        #region User input
+        // Pause updating.
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
-          GameOfLife.NextGeneration();
+          update = !update;
+          if (update) Console.WriteLine("Updating.");
+          else        Console.WriteLine("Updating paused.");
         }
 
-        GameOfLife.NextGeneration(); // TODO: GameOfLife.Run()?
+        // Set a new random game of life
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F1))
+        {
+          GameOfLife = new GameOfLife();
 
-        if (Raylib.IsKeyReleased(KeyboardKey.KEY_S)) // TODO
+          Raylib.SetWindowSize(windowWidth, windowHeight);
+        }
+
+        // TODO: Save state of field to a file.
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5))
         {
           GameOfLife.SaveFieldToFile("path?");
         }
 
+        // Hold down 1-4 key to set updating frequency. 
+        // Releasing the key returns it to default frequency. 
+
+        // 1/10 default speed.
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_ONE))
+        {
+          Raylib.SetTargetFPS(1);
+        }
+        // 1/2 default speed.
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_TWO))
+        {
+          Raylib.SetTargetFPS(5);
+        }
+        // Three times default speed.
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_THREE))
+        {
+          Raylib.SetTargetFPS(30);
+        }
+        // Six times default speed.
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_FOUR))
+        {
+          Raylib.SetTargetFPS(60);
+        }
+        // Default speed.
+        else
+        {
+          Raylib.SetTargetFPS(targetFps);
+        }
         #endregion
-        #region view
+
+        #region View
         Views.Raylib.In2D.FieldView.DrawIn2D(GameOfLife.Field, windowWidth, windowHeight);
         #endregion
       }

@@ -13,7 +13,7 @@
     public int Height { get; }
 
     public ICell[,] InitializeCells(ICell[,] cells, int width, int height);
-    public ICell UpdateCell(int x, int y, int neighboursCount);
+    public ICell NextCell(int x, int y, int neighboursCount);
     public int GetNeighboursCount(int x, int y);
   }
 }

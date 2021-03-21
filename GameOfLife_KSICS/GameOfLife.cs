@@ -17,8 +17,11 @@
     {
       var rnd = new Random();
 
-      var width = rnd.Next(20, 40);
-      var height = rnd.Next(20, 40);
+      var minSize = 20;
+      var maxSize = 100;
+
+      var width = rnd.Next(minSize, maxSize);
+      var height = rnd.Next(minSize, maxSize / 2);
 
       var field = new Field(width, height);
 
@@ -87,7 +90,7 @@
         for (int x = 0; x < Field.Width; x++)
         {
           var neighbourCount = Field.GetNeighboursCount(x, y);
-          Field.NextCells[x, y] = Field.UpdateCell(x, y, neighbourCount);
+          Field.NextCells[x, y] = Field.NextCell(x, y, neighbourCount);
         }
       }
 

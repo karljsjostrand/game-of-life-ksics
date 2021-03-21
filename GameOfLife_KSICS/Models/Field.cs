@@ -80,31 +80,34 @@
     }
 
     /// <summary>
-    /// Update the cell at this position using a set of rules 
-    /// based on it's count of neighbours alive.
+    /// Get the next cell at this position based on current cells alive state
+    /// and count of living neighbours.
     /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="neighboursCount"></param>
-    public ICell UpdateCell(int x, int y, int neighboursCount)
+    /// <param name="x">Horizontal position on the field.</param>
+    /// <param name="y">Vertical position on the field.</param>
+    /// <param name="neighboursCount">
+    /// Count of living neighbours to this cell.
+    /// </param>
+    /// <returns>The next cell at this position in the field.</returns>
+    public ICell NextCell(int x, int y, int neighboursCount)
     {
       var nextCell = new Cell();
       if (Cells[x, y] is Cell) nextCell.Age = (Cells[x, y] as Cell).Age;
 
-      // (Underpopulation?)
+      // Underpopulation?
       if (neighboursCount < 2)
       {
         nextCell.Alive = false;
         if (nextCell is Cell) (nextCell as Cell).Age = 0;
       }
       // Stay alive
-      else if (neighboursCount == 2 && Cells[x, y].Alive)
+      else if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
         if (nextCell is Cell) (nextCell as Cell).Age++;
       }
       // Bring alive
-      else if (neighboursCount == 3)
+      else if (neighboursCount == 3 && !Cells[x, y].Alive)
       {
         nextCell.Alive = true;
         if (nextCell is Cell) (nextCell as Cell).Age = 0;
