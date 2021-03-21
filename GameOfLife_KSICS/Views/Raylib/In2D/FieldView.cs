@@ -9,13 +9,16 @@
 
   class FieldView
   {
-    private static Color colorWhenAlive = Color.DARKPURPLE;
-    private static Color colorWhenDead = Color.DARKGRAY;
     private static Color borderColor = Color.BLACK;
+    private static Color colorWhenAlive = Color.DARKGRAY;
+    private static Color colorWhenDead = Color.BLACK;
+    private static Color colorWhenYoung = Color.GRAY;
+    private static Color colorWhenAdult = Color.LIGHTGRAY;
+    private static Color colorWhenOld = Color.WHITE;
+    private static Color colorWhenOlder = Color.GOLD;
 
     public static void DrawIn2D(IField field, int windowWidth, int windowHeight)
     {
-      var info = false; // TODO: remove
       Raylib.BeginDrawing();
       Raylib.ClearBackground(borderColor);
 
@@ -32,18 +35,18 @@
           // Color according to alive state of cell.
           var color = field.Cells[x, y].Alive ? colorWhenAlive : colorWhenDead;
 
-          Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
+          // Color by age.
+          if (field.Cells[x, y].Alive && field.Cells[x, y] is Cell)
+          {
+            if ((field.Cells[x, y] as Cell).Age == 1) color = colorWhenYoung;
+            if ((field.Cells[x, y] as Cell).Age == 2) color = colorWhenAdult;
+            if ((field.Cells[x, y] as Cell).Age == 3) color = colorWhenOld;
+            if ((field.Cells[x, y] as Cell).Age >= 4) color = colorWhenOlder;
+          }
 
-          //if (info) // TODO: remove
-          //{
-          //  Raylib.DrawText($"{cell.X},", posX + 1, posY + 1, 1, Color.BLACK); // TODO: remove
-          //  Raylib.DrawText($"{cell.Y}", posX + 1, posY + 10, 1, Color.BLACK); // TODO: remove
-          //  Raylib.DrawText($"{Raylib.GetMousePosition()}", Raylib.GetMouseX(), Raylib.GetMouseY(), 10, Color.WHITE); // TODO: remove
-          //}
+          Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
         }
       }
-
-      //Raylib.DrawFPS(5, 5); // TODO: remove
       Raylib.EndDrawing();
     }
   }

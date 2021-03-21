@@ -13,30 +13,17 @@
   {
     private GameOfLife GameOfLife { get; set; }
 
-    private static int windowWidth = 1600;
-    private static int windowHeight = 800;
-    private static int targetFps = 20;
+    private static int windowWidth = 1200;
+    private static int windowHeight = 600;
+    private static int targetFps = 10;
+    private static int cellSizeInPixels = 16;
 
     public GameOfLifeController(GameOfLife gameOfLife)
     {
       GameOfLife = gameOfLife;
 
-      #region add some initial life to the field, TODO: move this to where field is created?
-      //// add blinker
-      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 10));
-      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 20));
-      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 30));
-
-      //// add gliders
-      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (0, 0));
-      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (10, 0));
-      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (20, 0));
-      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (30, 0));
-      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (40, 0));
-
-      // add beehive
-      (GameOfLife.Field as Field).AddCellFormation(new Beehive(), (50, 0));
-      #endregion
+      windowWidth = gameOfLife.Field.Width * cellSizeInPixels;
+      windowHeight = gameOfLife.Field.Height * cellSizeInPixels;
     }
 
     public void Start()

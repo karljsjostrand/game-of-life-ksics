@@ -15,7 +15,19 @@
     /// </summary>
     public GameOfLife()
     {
-      throw new NotImplementedException();
+      var rnd = new Random();
+
+      var width = rnd.Next(20, 40);
+      var height = rnd.Next(20, 40);
+
+      var field = new Field(width, height);
+
+      foreach (var cell in field.Cells)
+      {
+        cell.Alive = Convert.ToBoolean(rnd.Next(0, 2));
+      }
+
+      Field = field;
     }
 
     /// <summary>
@@ -32,7 +44,7 @@
     /// Create an instance of GameOfLife with given starting field.
     /// </summary>
     /// <param name="field">Starting field.</param>
-    public GameOfLife(Field field)
+    public GameOfLife(IField field)
     {
       Field = field;
     }
@@ -65,14 +77,6 @@
 
     /// <summary>
     /// Progress to next generation. 
-    /// 
-    /// 0111
-    /// 0000
-    /// 
-    /// becomes
-    /// 
-    /// 0010
-    /// 0010
     /// </summary>
     public void NextGeneration()
     {
@@ -93,7 +97,7 @@
     /// <summary>
     /// Progress until all cells are dead (or only 2 states remain?).
     /// </summary>
-    public void Run()
+    public void Run() // TODO: Is this method even necessary?
     {
       throw new NotImplementedException();
     }

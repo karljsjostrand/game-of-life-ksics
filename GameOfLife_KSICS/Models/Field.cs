@@ -89,26 +89,31 @@
     public ICell UpdateCell(int x, int y, int neighboursCount)
     {
       var nextCell = new Cell();
+      if (Cells[x, y] is Cell) nextCell.Age = (Cells[x, y] as Cell).Age;
 
       // (Underpopulation?)
       if (neighboursCount < 2)
       {
         nextCell.Alive = false;
+        if (nextCell is Cell) (nextCell as Cell).Age = 0;
       }
       // Stay alive
       else if (neighboursCount == 2 && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
+        if (nextCell is Cell) (nextCell as Cell).Age++;
       }
       // Bring alive
       else if (neighboursCount == 3)
       {
         nextCell.Alive = true;
+        if (nextCell is Cell) (nextCell as Cell).Age = 0;
       }
       // Overpopulation
       else
       {
         nextCell.Alive = false;
+        if (nextCell is Cell) (nextCell as Cell).Age = 0;
       }
 
       return nextCell;
