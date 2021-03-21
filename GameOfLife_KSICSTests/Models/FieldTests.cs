@@ -11,11 +11,11 @@ namespace GameOfLife_KSICS.Models.Tests
     int fieldWidth = 80;
     int fieldHeight = 40;
     Field field;
-    (int, int) centeredCellPosition;
-    (int, int) topLeftCornerCellPosition;
-    (int, int) topRightCornerCellPosition;
-    (int, int) btmLeftCornerCellPosition;
-    (int, int) btmRightCornerCellPosition;
+    (int x, int y) centeredCellPosition;
+    (int x, int y) topLeftCornerCellPosition;
+    (int x, int y) topRightCornerCellPosition;
+    (int x, int y) btmLeftCornerCellPosition;
+    (int x, int y) btmRightCornerCellPosition;
 
     [SetUp()]
     public void Setup()
@@ -35,10 +35,10 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldReturnZero_WhenNoNeighourAlive()
     {
-      var x = centeredCellPosition.Item1;
-      var y = centeredCellPosition.Item2;
+      var x = centeredCellPosition.x;
+      var y = centeredCellPosition.y;
       var expected = 0;
-      var actual = field.GetNeighbourCount(x, y);
+      var actual = field.GetNeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -54,13 +54,13 @@ namespace GameOfLife_KSICS.Models.Tests
     [TestCase(39, 19)] // 22:30
     public void GetNeighourCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
     {
-      var x = centeredCellPosition.Item1;
-      var y = centeredCellPosition.Item2;
+      var x = centeredCellPosition.x;
+      var y = centeredCellPosition.y;
 
       field.Cells[neighbourX, neighbourY].Alive = true;
 
       var expected = 1;
-      var actual = field.GetNeighbourCount(x, y);
+      var actual = field.GetNeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -68,15 +68,15 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
     {
-      var x = centeredCellPosition.Item1;
-      var y = centeredCellPosition.Item2;
+      var x = centeredCellPosition.x;
+      var y = centeredCellPosition.y;
 
       field.Cells[41, 19].Alive = true; // 13:30
       field.Cells[41, 20].Alive = true; // 15
       field.Cells[41, 21].Alive = true; // 16:30
 
       var expected = 3;
-      var actual = field.GetNeighbourCount(x, y);
+      var actual = field.GetNeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -84,7 +84,7 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void GetNeighourCountTest_ShouldIgnoreNeighbour_WhenNeighbourIsOutOfBounds()
     {
-      var edgePositions = new List<(int, int)>()
+      var edgePositions = new List<(int x, int y)>()
       {
         topLeftCornerCellPosition,
         topRightCornerCellPosition,
@@ -94,9 +94,9 @@ namespace GameOfLife_KSICS.Models.Tests
 
       foreach (var position in edgePositions)
       {
-        var x = position.Item1;
-        var y = position.Item2;
-        field.GetNeighbourCount(x, y);
+        var x = position.x;
+        var y = position.y;
+        field.GetNeighboursCount(x, y);
       }
     }
 
@@ -108,7 +108,7 @@ namespace GameOfLife_KSICS.Models.Tests
     public void GetNeighourCountTest_ShouldReturnZero_WhenOutOfBoundsPositions(int x, int y)
     {
       var expected = 0;
-      var actual = field.GetNeighbourCount(x, y);
+      var actual = field.GetNeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -117,8 +117,8 @@ namespace GameOfLife_KSICS.Models.Tests
     public void UpdateCellTest_ShouldSetToAlive_WhenThreeNeighbours()
     {
       var position = centeredCellPosition;
-      var x = position.Item1;
-      var y = position.Item2;
+      var x = position.x;
+      var y = position.y;
 
       field.UpdateCell(x, y, 3);
 
@@ -129,8 +129,8 @@ namespace GameOfLife_KSICS.Models.Tests
     public void UpdateCellTest_ShouldSetToAlive_WhenTwoNeighbours()
     {
       var position = centeredCellPosition;
-      var x = position.Item1;
-      var y = position.Item2;
+      var x = position.x;
+      var y = position.y;
 
       field.UpdateCell(x, y, 2);
 
@@ -143,8 +143,8 @@ namespace GameOfLife_KSICS.Models.Tests
     public void UpdateCellTest_ShouldSetToDead_WhenLessThanTwoNeighbours(int neighboursCount)
     {
       var position = centeredCellPosition;
-      var x = position.Item1;
-      var y = position.Item2;
+      var x = position.x;
+      var y = position.y;
 
       field.UpdateCell(x, y, neighboursCount);
 
@@ -158,8 +158,8 @@ namespace GameOfLife_KSICS.Models.Tests
     public void UpdateCellTest_ShouldSetToDead_WhenMoreThanThreeNeighbours(int neighboursCount)
     {
       var position = centeredCellPosition;
-      var x = position.Item1;
-      var y = position.Item2;
+      var x = position.x;
+      var y = position.y;
 
       field.UpdateCell(x, y, neighboursCount);
 

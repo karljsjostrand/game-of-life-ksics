@@ -15,43 +15,27 @@
 
     private static int windowWidth = 1600;
     private static int windowHeight = 800;
-    private static int targetFps = 60;
+    private static int targetFps = 20;
 
     public GameOfLifeController(GameOfLife gameOfLife)
     {
       GameOfLife = gameOfLife;
 
-      #region move this to its own class or to field?
-      //// add line
-      //GameOfLife.Field.Cells[5, 3].Alive = true;
-      //GameOfLife.Field.Cells[6, 3].Alive = true;
-      //GameOfLife.Field.Cells[7, 3].Alive = true;
+      #region add some initial life to the field, TODO: move this to where field is created?
+      //// add blinker
+      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 10));
+      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 20));
+      (GameOfLife.Field as Field).AddCellFormation(new Blinker(), (0, 30));
 
-      // add tub
-      //GameOfLife.Field.Cells[74, 8].Alive = true;
-      //GameOfLife.Field.Cells[75, 7].Alive = true;
-      //GameOfLife.Field.Cells[76, 8].Alive = true;
-      //GameOfLife.Field.Cells[75, 9].Alive = true;
+      //// add gliders
+      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (0, 0));
+      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (10, 0));
+      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (20, 0));
+      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (30, 0));
+      (GameOfLife.Field as Field).AddCellFormation(new Glider(), (40, 0));
 
-      //// add box
-      //GameOfLife.Field.Cells[45, 12].Alive = true;
-      //GameOfLife.Field.Cells[46, 12].Alive = true;
-      //GameOfLife.Field.Cells[47, 12].Alive = true;
-      //GameOfLife.Field.Cells[47, 13].Alive = true;
-      //GameOfLife.Field.Cells[47, 14].Alive = true;
-      //GameOfLife.Field.Cells[46, 14].Alive = true;
-      //GameOfLife.Field.Cells[45, 14].Alive = true;
-      //GameOfLife.Field.Cells[45, 13].Alive = true;
-
-      // add gliders
-      //GameOfLife.Field.Cells[20, 18].Alive = true;
-      //GameOfLife.Field.Cells[21, 19].Alive = true;
-      //GameOfLife.Field.Cells[22, 17].Alive = true;
-      //GameOfLife.Field.Cells[22, 18].Alive = true;
-      //GameOfLife.Field.Cells[22, 19].Alive = true;
-      var glider = new Glider();
-      glider.AddToField(GameOfLife.Field, (0, 0));
-      //glider.AddToField(GameOfLife.Field, (20, 32));
+      // add beehive
+      (GameOfLife.Field as Field).AddCellFormation(new Beehive(), (50, 0));
       #endregion
     }
 
@@ -72,18 +56,16 @@
           GameOfLife.NextGeneration();
         }
 
-        GameOfLife.NextGeneration();
+        GameOfLife.NextGeneration(); // TODO: GameOfLife.Run()?
 
-        if (Raylib.IsKeyReleased(KeyboardKey.KEY_S))
+        if (Raylib.IsKeyReleased(KeyboardKey.KEY_S)) // TODO
         {
-          GameOfLife.SaveFieldToFile("???");
+          GameOfLife.SaveFieldToFile("path?");
         }
 
-
+        #endregion
         #region view
         Views.Raylib.In2D.FieldView.DrawIn2D(GameOfLife.Field, windowWidth, windowHeight);
-        #endregion
-
         #endregion
       }
       Raylib.CloseWindow();

@@ -1,13 +1,15 @@
 ﻿namespace GameOfLife_KSICS.Models
 {
+  using GameOfLife_KSICS.Abstracts;
+  using GameOfLife_KSICS.Interfaces;
   using System;
   using System.Collections.Generic;
   using System.Text;
 
-  public class Field
+  public class Field : IField
   {
-    public Cell[,] Cells { get; set; }
-    public Cell[,] NextCells { get; set; }
+    public ICell[,] Cells { get; set; }
+    public ICell[,] NextCells { get; set; }
 
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -19,7 +21,7 @@
       Cells = InitializeCells(Cells, width, height);
     }
 
-    public Cell[,] InitializeCells(Cell[,] cells, int width, int height)
+    public ICell[,] InitializeCells(ICell[,] cells, int width, int height)
     {
       cells = new Cell[width, height];
 
@@ -27,7 +29,7 @@
       {
         for (int x = 0; x < width; x++)
         {
-          cells[x, y] = new Cell(x, y);
+          cells[x, y] = new Cell();
         }
       }
 
@@ -44,7 +46,7 @@
     /// Amount of neighbours alive next to this position, 
     /// vertically, horizontally, or diagonally, 0 to 8. 
     /// </returns>
-    public int GetNeighbourCount(int x, int y) 
+    public int GetNeighboursCount(int x, int y)
     {
       var count = 0;
 
@@ -71,11 +73,11 @@
     /// </returns>
     private bool IsLivingCellAt(int x, int y)
     {
-      // If position is out of bounds.
-      if (x < 0 || x >= Width) return false;
-      if (y < 0 || y >= Height) return false;
+      //// If position is out of bounds.
+      //if (x < 0 || x >= Width) return false;
+      //if (y < 0 || y >= Height) return false;
 
-      return Cells[x, y].Alive;
+      return Cells[(x + Width) % Width, (y + Height) % Height].Alive;
     }
 
     /// <summary>
@@ -85,18 +87,21 @@
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="neighboursCount"></param>
-    public Cell UpdateCell(int x, int y, int neighboursCount)
+    public ICell UpdateCell(int x, int y, int neighboursCount)
     {
-      var nextCell = new Cell(x, y);
+      var nextCell = new Cell();
 
+      // ...
       if (neighboursCount < 2)
       {
         nextCell.Alive = false;
       }
+      // Stay alive
       else if (neighboursCount == 2 && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
       }
+      // Bring alive
       else if (neighboursCount == 3)
       {
         nextCell.Alive = true;
@@ -108,6 +113,14 @@
       }
 
       return nextCell;
+    }
+
+    public void AddCellFormation(CellFormation cellformation, (int x, int y) pos)
+    {
+      foreach (var cell in cellformation.Cells)
+      {
+        Cells[pos.x + cell.x, pos.y + cell.y].Alive = true;
+      }
     }
   }
 }

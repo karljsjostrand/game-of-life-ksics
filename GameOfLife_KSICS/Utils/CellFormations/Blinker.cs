@@ -6,23 +6,20 @@
   using System;
   using System.Collections.Generic;
   using System.Text;
-  using Utils;
 
-  class Glider : CellFormation
+  class Blinker : CellFormation
   {
-    public override (int Width, int Height) Size { get; } = (3, 3);
+    public override (int Width, int Height) Size { get; } = (3, 1);
 
     public override void AddCells()
     {
-      // coordinates shaping a glider formation
+      // 3 coordinates forming a horizontal line.
       Cells.AddRange(
-        new List<(int x, int y)>()
-        {
-          (0, 1),
-          (1, 2),
+        new List<(int x, int y)>() 
+        { 
+          (0, 0),
+          (1, 0),
           (2, 0),
-          (2, 1),
-          (2, 2),
         });
     }
   }

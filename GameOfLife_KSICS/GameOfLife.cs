@@ -1,5 +1,6 @@
 ﻿namespace GameOfLife_KSICS
 {
+  using GameOfLife_KSICS.Interfaces;
   using GameOfLife_KSICS.Models;
   using System;
   using System.Collections.Generic;
@@ -7,7 +8,7 @@
 
   public class GameOfLife
   {
-    public Field Field { get; private set; }
+    public IField Field { get; private set; }
 
     /// <summary>
     /// Create an instance of GameOfLife with a starting field of randomized width, height, and cells. 
@@ -81,7 +82,7 @@
       {
         for (int x = 0; x < Field.Width; x++)
         {
-          var neighbourCount = Field.GetNeighbourCount(x, y);
+          var neighbourCount = Field.GetNeighboursCount(x, y);
           Field.NextCells[x, y] = Field.UpdateCell(x, y, neighbourCount);
         }
       }

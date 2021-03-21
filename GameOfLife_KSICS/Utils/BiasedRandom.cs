@@ -14,6 +14,7 @@
         numbers.Add(GetBiased(min, max));
       }
       numbers.Sort();
+
       var total = 0;
       foreach (var number in numbers)
       {
