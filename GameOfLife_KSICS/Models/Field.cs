@@ -36,7 +36,6 @@
       return cells;
     }
 
-
     /// <summary>
     /// Get a cells number of living neighbours. 
     /// </summary>
@@ -51,14 +50,14 @@
       var count = 0;
 
       // Clockwise, starting at 12
-      if (IsLivingCellAt(x,     y - 1)) count++; // 12
-      if (IsLivingCellAt(x + 1, y - 1)) count++; // 13:30
-      if (IsLivingCellAt(x + 1, y    )) count++; // 15
-      if (IsLivingCellAt(x + 1, y + 1)) count++; // 16:30
-      if (IsLivingCellAt(x,     y + 1)) count++; // 18
-      if (IsLivingCellAt(x - 1, y + 1)) count++; // 19:30
-      if (IsLivingCellAt(x - 1, y    )) count++; // 21
-      if (IsLivingCellAt(x - 1, y - 1)) count++; // 22:30
+      if (IsAlive(x,     y - 1)) count++; // 12
+      if (IsAlive(x + 1, y - 1)) count++; // 13:30
+      if (IsAlive(x + 1, y    )) count++; // 15
+      if (IsAlive(x + 1, y + 1)) count++; // 16:30
+      if (IsAlive(x,     y + 1)) count++; // 18
+      if (IsAlive(x - 1, y + 1)) count++; // 19:30
+      if (IsAlive(x - 1, y    )) count++; // 21
+      if (IsAlive(x - 1, y - 1)) count++; // 22:30
 
       return count;
     }
@@ -69,9 +68,9 @@
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
     /// <returns>
-    /// true if cell is alive, false if it isn't or position is out of bounds.
+    /// Alive state of cell.
     /// </returns>
-    private bool IsLivingCellAt(int x, int y)
+    private bool IsAlive(int x, int y)
     {
       //// If position is out of bounds.
       //if (x < 0 || x >= Width) return false;
@@ -91,7 +90,7 @@
     {
       var nextCell = new Cell();
 
-      // ...
+      // (Underpopulation?)
       if (neighboursCount < 2)
       {
         nextCell.Alive = false;
