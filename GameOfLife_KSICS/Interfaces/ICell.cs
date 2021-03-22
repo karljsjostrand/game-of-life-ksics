@@ -7,5 +7,6 @@
   public interface ICell
   {
     public bool Alive { get; set; }
+    public int Age { get; set; }
   }
 }

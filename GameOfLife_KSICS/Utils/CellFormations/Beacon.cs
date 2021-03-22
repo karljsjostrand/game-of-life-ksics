@@ -1,28 +1,26 @@
 ﻿namespace GameOfLife_KSICS.Utils.CellFormations
 {
   using GameOfLife_KSICS.Abstracts;
-  using GameOfLife_KSICS.Interfaces;
-  using GameOfLife_KSICS.Models;
   using System;
   using System.Collections.Generic;
   using System.Text;
-  using Utils;
 
-  class Glider : CellFormation
+  class Beacon : CellFormation
   {
-    public override (int Width, int Height) Size { get; } = (3, 3);
+    public override (int Width, int Height) Size { get; } = (4, 4);
 
     public override void AddCells()
     {
-      // coordinates for a glider formation
+      // coordinates for a beacon formation
       CellPositions.AddRange(
         new List<(int x, int y)>()
         {
+          (0, 0),
+          (1, 0),
           (0, 1),
-          (1, 2),
-          (2, 0),
-          (2, 1),
-          (2, 2),
+          (3, 2),
+          (2, 3),
+          (3, 3),
         });
     }
   }

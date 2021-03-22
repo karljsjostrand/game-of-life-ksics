@@ -8,8 +8,8 @@ namespace GameOfLife_KSICS.Models.Tests
   [TestFixture()]
   public class FieldTests
   {
-    int fieldWidth = 80;
-    int fieldHeight = 40;
+    static readonly int fieldWidth = 80;
+    static readonly int fieldHeight = 40;
     Field field;
     (int x, int y) centeredCellPosition;
     (int x, int y) topLeftCornerCellPosition;
@@ -30,13 +30,14 @@ namespace GameOfLife_KSICS.Models.Tests
     }
 
     /// <summary>
-    /// Should return 0 when no neighbour alive. 
+    /// Should return 0 when no neighbours alive. 
     /// </summary>
     [Test()]
-    public void GetNeighourCountTest_ShouldReturnZero_WhenNoNeighourAlive()
+    public void GetNeighoursCountTest_ShouldReturnZero_WhenNoNeighoursAlive()
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
+
       var expected = 0;
       var actual = field.GetNeighboursCount(x, y);
 
@@ -52,7 +53,7 @@ namespace GameOfLife_KSICS.Models.Tests
     [TestCase(39, 21)] // 19:30
     [TestCase(39, 20)] // left, 21
     [TestCase(39, 19)] // 22:30
-    public void GetNeighourCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
+    public void GetNeighoursCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
@@ -66,14 +67,29 @@ namespace GameOfLife_KSICS.Models.Tests
     }
 
     [Test()]
-    public void GetNeighourCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
+    public void GetNeighoursCountTest_ShouldReturnTwo_WhenTwoNeighboursAlive()
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[41, 19].Alive = true; // 13:30
-      field.Cells[41, 20].Alive = true; // 15
-      field.Cells[41, 21].Alive = true; // 16:30
+      field.Cells[x + 1, y - 1].Alive = true; // 13:30
+      field.Cells[x + 1, y].Alive = true; // 15
+
+      var expected = 2;
+      var actual = field.GetNeighboursCount(x, y);
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    [Test()]
+    public void GetNeighoursCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
+    {
+      var x = centeredCellPosition.x;
+      var y = centeredCellPosition.y;
+
+      field.Cells[x + 1, y - 1].Alive = true; // 13:30
+      field.Cells[x + 1, y    ].Alive = true; // 15
+      field.Cells[x + 1, y + 1].Alive = true; // 16:30
 
       var expected = 3;
       var actual = field.GetNeighboursCount(x, y);
@@ -82,7 +98,24 @@ namespace GameOfLife_KSICS.Models.Tests
     }
 
     [Test()]
-    public void GetNeighourCountTest_ShouldIgnoreNeighbour_WhenNeighbourIsOutOfBounds()
+    public void GetNeighoursCountTest_ShouldReturnFour_WhenFourNeighboursAlive()
+    {
+      var x = centeredCellPosition.x;
+      var y = centeredCellPosition.y;
+
+      field.Cells[x + 1, y - 1].Alive = true; // 13:30
+      field.Cells[x + 1, y].Alive = true; // 15
+      field.Cells[x + 1, y + 1].Alive = true; // 16:30
+      field.Cells[x, y + 1].Alive = true; // 18
+
+      var expected = 4;
+      var actual = field.GetNeighboursCount(x, y);
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    [Test()]
+    public void GetNeighoursCountTest_ShouldNotThrowException_WhenNeighbourIsOutOfBounds()
     {
       var edgePositions = new List<(int x, int y)>()
       {
@@ -92,70 +125,90 @@ namespace GameOfLife_KSICS.Models.Tests
         btmRightCornerCellPosition,
       };
 
-      foreach (var position in edgePositions)
+      try
       {
-        var x = position.x;
-        var y = position.y;
-        field.GetNeighboursCount(x, y);
+        foreach (var position in edgePositions)
+        {
+          var x = position.x;
+          var y = position.y;
+          field.GetNeighboursCount(x, y);
+        }
+      }
+      catch (Exception e)
+      {
+        Assert.Fail($"Neighbour out of bounds? {e} was thrown.");
       }
     }
 
-    [Test()]
-    [TestCase(-1, -1)]
-    [TestCase(0, 41)]
-    [TestCase(81, 41)]
-    [TestCase(81, 0)]
-    public void GetNeighourCountTest_ShouldReturnZero_WhenOutOfBoundsPositions(int x, int y)
-    {
-      var expected = 0;
-      var actual = field.GetNeighboursCount(x, y);
+    // TODO: make it check other side of array neighbours
+    //[Test()]
+    //[TestCase(-1, -1)]
+    //[TestCase(0, 41)]
+    //[TestCase(fieldWidth, 41)]
+    //[TestCase(fieldWidth, 0)]
+    //public void GetNeighourCountTest_ShouldReturnZero_WhenNeighboursAreOutOfBounds(int x, int y)
+    //{
+    //  var expected = 0;
+    //  var actual = field.GetNeighboursCount(x, y);
 
-      Assert.AreEqual(expected, actual);
-    }
-
-    [Test()]
-    public void UpdateCellTest_ShouldSetToAlive_WhenThreeNeighbours()
-    {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
-
-      field.NextCell(x, y, 3);
-
-      Assert.IsTrue(field.Cells[x, y].Alive);
-    }
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [Test()]
-    public void UpdateCellTest_ShouldSetToAlive_WhenTwoNeighbours()
+    public void NextCellTest_ShouldBringAlive_WhenThreeNeighboursAndDeadInCurrentGen()
     {
       var position = centeredCellPosition;
       var x = position.x;
       var y = position.y;
 
-      field.NextCell(x, y, 2);
+      field.Cells[x, y].Alive = false;
 
-      Assert.IsTrue(field.Cells[x, y].Alive);
+      Assert.IsTrue(field.NextCell(x, y, 3).Alive, "Should be alive.");
     }
 
     [Test()]
+    public void NextCellTest_ShouldKeepAlive_WhenTwoNeighboursAndAliveInCurrentGen()
+    {
+      var position = centeredCellPosition;
+      var x = position.x;
+      var y = position.y;
+
+      field.Cells[x, y].Alive = true;
+
+      Assert.IsTrue(field.NextCell(x, y, 2).Alive, "Should be alive.");
+    }
+
+    [Test()]
+    public void NextCellTest_ShouldNotBringAlive_WhenTwoNeighboursAndDeadInCurrentGen()
+    {
+      var position = centeredCellPosition;
+      var x = position.x;
+      var y = position.y;
+
+      field.Cells[x, y].Alive = false;
+
+      Assert.IsFalse(field.NextCell(x, y, 2).Alive, "Should not be alive.");
+    }
+
+    [Test()]
+    [TestCase(int.MinValue)]
+    [TestCase(-1)]
     [TestCase(0)]
     [TestCase(1)]
-    public void UpdateCellTest_ShouldSetToDead_WhenLessThanTwoNeighbours(int neighboursCount)
+    public void NextCellTest_ShouldSetToDead_WhenLessThanTwoNeighbours(int neighboursCount)
     {
       var position = centeredCellPosition;
       var x = position.x;
       var y = position.y;
 
-      field.NextCell(x, y, neighboursCount);
-
-      Assert.IsFalse(field.Cells[x, y].Alive);
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive);
     }
 
     [Test()]
     [TestCase(4)]
     [TestCase(5)]
     [TestCase(int.MaxValue)]
-    public void UpdateCellTest_ShouldSetToDead_WhenMoreThanThreeNeighbours(int neighboursCount)
+    public void NextCellTest_ShouldSetToDead_WhenMoreThanThreeNeighbours(int neighboursCount)
     {
       var position = centeredCellPosition;
       var x = position.x;
@@ -163,7 +216,7 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.NextCell(x, y, neighboursCount);
 
-      Assert.IsFalse(field.Cells[x, y].Alive);
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive);
     }
   }
 }

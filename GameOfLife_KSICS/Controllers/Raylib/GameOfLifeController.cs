@@ -12,7 +12,8 @@
   class GameOfLifeController
   {
     private GameOfLife GameOfLife { get; set; }
-    private static int targetFps = 10;
+    private static int defaultTargetFps = 10;
+    private int targetFps = defaultTargetFps;
     private static int cellSizeInPixels = 16;
 
     private int windowWidth => GameOfLife.Field.Width * cellSizeInPixels;
@@ -33,12 +34,8 @@
 
       while (!Raylib.WindowShouldClose())
       {
-        #region Update
-        if (update) GameOfLife.NextGeneration();
-        #endregion
-
         #region User input
-        // Pause updating.
+        // Pauses updating.
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
         {
           update = !update;
@@ -46,48 +43,111 @@
           else        Console.WriteLine("Updating paused.");
         }
 
-        // Set a new random game of life
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F1))
+        // Sets a new random game of life
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F1) || Raylib.IsKeyPressed(KeyboardKey.KEY_R))
         {
           GameOfLife = new GameOfLife();
 
           Raylib.SetWindowSize(windowWidth, windowHeight);
         }
 
-        // TODO: Save state of field to a file.
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5))
+        // Sets a new pre-defined game of life
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F2) || Raylib.IsKeyPressed(KeyboardKey.KEY_N))
+        {
+          var field = new Field(80, 40);
+
+          #region add some initial cellformations to field
+          // add blinker
+          field.AddCellFormation(new Blinker(), (-1, 0));
+
+          //// add glider
+          field.AddCellFormation(new Glider(), (10, 1));
+
+          // add beehive
+          field.AddCellFormation(new Beehive(), (20, 1));
+
+          // snake
+          field.AddCellFormation(new Snake(), (30, 1));
+
+          // beacon
+          field.AddCellFormation(new Beacon(), (40, 1));
+          #endregion
+
+          GameOfLife = new GameOfLife(field);
+
+          Raylib.SetWindowSize(windowWidth, windowHeight);
+        }
+
+        // TODO: Saves state of field to a file.
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
         {
           GameOfLife.SaveFieldToFile("path?");
         }
 
-        // Hold down 1-4 key to set updating frequency. 
+        // TODO: Prints current state of field to console.
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_F6) || Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+        {
+          Console.WriteLine(GameOfLife.Field.ToString());
+        }
+
+        // Holding down 1-4 key sets updating frequency.
+        // 1-2 sets lower.
+        // 3-4 sets higher.
         // Releasing the key returns it to default frequency. 
 
         // 1/10 default speed.
         if (Raylib.IsKeyDown(KeyboardKey.KEY_ONE))
         {
-          Raylib.SetTargetFPS(1);
+          var newFps = 1;
+          if (targetFps != newFps)
+          {
+            targetFps = newFps;
+            Raylib.SetTargetFPS(targetFps);
+          }
         }
         // 1/2 default speed.
         else if (Raylib.IsKeyDown(KeyboardKey.KEY_TWO))
         {
-          Raylib.SetTargetFPS(5);
+          var newFps = 5;
+          if (targetFps != newFps)
+          {
+            targetFps = newFps;
+            Raylib.SetTargetFPS(targetFps);
+          }
         }
         // Three times default speed.
         else if (Raylib.IsKeyDown(KeyboardKey.KEY_THREE))
         {
-          Raylib.SetTargetFPS(30);
+          var newFps = 30;
+          if (targetFps != newFps)
+          {
+            targetFps = newFps;
+            Raylib.SetTargetFPS(targetFps);
+          }
         }
         // Six times default speed.
         else if (Raylib.IsKeyDown(KeyboardKey.KEY_FOUR))
         {
-          Raylib.SetTargetFPS(60);
+          var newFps = 60;
+          if (targetFps != newFps)
+          {
+            targetFps = newFps;
+            Raylib.SetTargetFPS(targetFps);
+          }
         }
         // Default speed.
         else
         {
-          Raylib.SetTargetFPS(targetFps);
+          if (targetFps != defaultTargetFps)
+          {
+            targetFps = defaultTargetFps;
+            Raylib.SetTargetFPS(targetFps);
+          }
         }
+        #endregion
+
+        #region Update
+        if (update) GameOfLife.NextGeneration();
         #endregion
 
         #region View

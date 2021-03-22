@@ -1,28 +1,26 @@
 ﻿namespace GameOfLife_KSICS.Utils.CellFormations
 {
   using GameOfLife_KSICS.Abstracts;
-  using GameOfLife_KSICS.Interfaces;
-  using GameOfLife_KSICS.Models;
   using System;
   using System.Collections.Generic;
   using System.Text;
-  using Utils;
 
-  class Glider : CellFormation
+  class Snake : CellFormation
   {
-    public override (int Width, int Height) Size { get; } = (3, 3);
+    public override (int Width, int Height) Size { get; } = (4, 2);
 
     public override void AddCells()
     {
-      // coordinates for a glider formation
+      // coordinates for a snake formation
       CellPositions.AddRange(
         new List<(int x, int y)>()
         {
-          (0, 1),
-          (1, 2),
+          (0, 0),
           (2, 0),
-          (2, 1),
-          (2, 2),
+          (3, 0),
+          (0, 1),
+          (1, 1),
+          (3, 1),
         });
     }
   }

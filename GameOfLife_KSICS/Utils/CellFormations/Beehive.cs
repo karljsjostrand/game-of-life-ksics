@@ -13,8 +13,8 @@
 
     public override void AddCells()
     {
-      // coordinates forming a beehive formation
-      Cells.AddRange(
+      // coordinates for a beehive formation
+      CellPositions.AddRange(
         new List<(int x, int y)>()
         {
           (0, 1),

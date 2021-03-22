@@ -13,29 +13,29 @@
   {
     static void Main()
     {
-      GameOfLifeFromRandomizedField();
-      //GameOfLifeFromDefinedField();
+      //GameOfLifeFromRandomizedField();
+      GameOfLifeFromDefinedField();
     }
 
     static void GameOfLifeFromDefinedField()
     {
       var field = new Field(80, 40);
 
-      #region add some initial living cells to field
+      #region add some initial cellformations to field
       // add blinker
-      field.AddCellFormation(new Blinker(), (0, 10));
-      field.AddCellFormation(new Blinker(), (0, 20));
-      field.AddCellFormation(new Blinker(), (0, 30));
+      field.AddCellFormation(new Blinker(), (-1, 0));
 
-      //// add gliders
-      field.AddCellFormation(new Glider(), (0, 0));
-      field.AddCellFormation(new Glider(), (10, 0));
-      field.AddCellFormation(new Glider(), (20, 0));
-      field.AddCellFormation(new Glider(), (30, 0));
-      field.AddCellFormation(new Glider(), (40, 0));
+      //// add glider
+      field.AddCellFormation(new Glider(), (10, 1));
 
       // add beehive
-      field.AddCellFormation(new Beehive(), (50, 0));
+      field.AddCellFormation(new Beehive(), (20, 1));
+
+      // snake
+      field.AddCellFormation(new Snake(), (30, 1));
+
+      // beacon
+      field.AddCellFormation(new Beacon(), (40, 1));
       #endregion
 
       var gameOfLife = new GameOfLife(field);

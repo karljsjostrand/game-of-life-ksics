@@ -8,13 +8,13 @@ namespace GameOfLife_KSICS.Tests
   public class GameOfLifeTests
   {
     private GameOfLife gameOfLife;
-    int fieldWidth = 80;
-    int fieldHeight = 40;
-    (int, int) centeredCellPosition;
-    (int, int) topLeftCornerCellPosition;
-    (int, int) topRightCornerCellPosition;
-    (int, int) btmLeftCornerCellPosition;
-    (int, int) btmRightCornerCellPosition;
+    static readonly int fieldWidth = 20;
+    static readonly int fieldHeight = 20;
+    (int x, int y) centeredCellPosition;
+    (int x, int y) topLeftCornerCellPosition;
+    (int x, int y) topRightCornerCellPosition;
+    (int x, int y) btmLeftCornerCellPosition;
+    (int x, int y) btmRightCornerCellPosition;
 
     [SetUp()]
     public void Setup()

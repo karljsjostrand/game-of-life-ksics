@@ -13,8 +13,8 @@
 
     public override void AddCells()
     {
-      // 3 coordinates forming a horizontal line.
-      Cells.AddRange(
+      // coordinates for a horizontal blinker.
+      CellPositions.AddRange(
         new List<(int x, int y)>() 
         { 
           (0, 0),

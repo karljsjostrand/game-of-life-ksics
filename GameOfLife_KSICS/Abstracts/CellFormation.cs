@@ -8,7 +8,7 @@
   public abstract class CellFormation
   {
     public abstract (int Width, int Height) Size { get; }
-    public List<(int x, int y)> Cells { get; } = new List<(int x, int y)>();
+    public List<(int x, int y)> CellPositions { get; } = new List<(int x, int y)>();
 
     public CellFormation()
     {
@@ -17,7 +17,7 @@
 
     /// <summary>
     /// Called in constructor.
-    /// Define and add cells of the formation to Cells list.
+    /// Set and add cell positions.
     /// </summary>
     public abstract void AddCells();
   }

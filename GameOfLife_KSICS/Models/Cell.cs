@@ -9,5 +9,10 @@
   {
     public bool Alive { get; set; } = false;
     public int Age { get; set; } = 0;
+
+    /// <summary>
+    /// Creates a cell with it's alive state set to false and age at 0.
+    /// </summary>
+    public Cell() { }
   }
 }

@@ -9,9 +9,10 @@
   public class GameOfLife
   {
     public IField Field { get; private set; }
+    public int GenerationsCount { get; private set; } = 0;
 
     /// <summary>
-    /// Create an instance of GameOfLife with a starting field of randomized width, height, and cells. 
+    /// Create an instance with a field of randomized width, height, and initial alive states. 
     /// </summary>
     public GameOfLife()
     {
@@ -27,29 +28,49 @@
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = Convert.ToBoolean(rnd.Next(0, 2));
+        cell.Alive = rnd.NextDouble() >= .5;
       }
 
       Field = field;
     }
 
     /// <summary>
-    /// Create an instance of GameOfLife with a field of given width and height and randomized cells.
+    /// Create an instance with a field of given width and height and randomized cells.
     /// </summary>
-    /// <param name="width">Width of starting field in number of cells.</param>
-    /// <param name="height">Height of starting field in number of cells.</param>
+    /// <param name="width">Width of it's field in number of cells.</param>
+    /// <param name="height">Height of it's field in number of cells.</param>
     public GameOfLife(int width, int height)
     {
-      throw new NotImplementedException();
+      var rnd = new Random();
+
+      var field = new Field(width, height);
+
+      foreach (var cell in field.Cells)
+      {
+        cell.Alive = rnd.NextDouble() >= .5;
+      }
+
+      Field = field;
     }
 
     /// <summary>
-    /// Create an instance of GameOfLife with given starting field.
+    /// Create an instance with a given field.
     /// </summary>
     /// <param name="field">Starting field.</param>
     public GameOfLife(IField field)
     {
       Field = field;
+    }
+
+    /// <summary>
+    /// Create an instance with a given field from a file.
+    /// </summary>
+    /// <param name="path">Path to and including file name.</param>
+    public GameOfLife(string path)
+    {
+      throw new NotImplementedException();
+
+      // TODO: load field from file - unpack string into a Field object
     }
 
     /// <summary>
@@ -63,23 +84,13 @@
 
       var fileName = DateTime.Now + ".txt";
 
-      var fileContents = "";
+      var fileContents = Field.ToString();
 
-      // Create a string representation of the fields alive states.
-      for (int y = 0; y < Field.Height; y++)
-      {
-        for (int x = 0; x < Field.Width; x++)
-        {
-          fileContents += Convert.ToInt32(Field.Cells[x, y].Alive);
-        }
-        fileContents += "\n";
-      }
-
-      // TODO
+      // TODO: save string to .txt file?
     }
 
     /// <summary>
-    /// Progress to next generation. 
+    /// Step field state to next generation. 
     /// </summary>
     public void NextGeneration()
     {
@@ -95,14 +106,7 @@
       }
 
       Field.Cells = Field.NextCells;
-    }
-
-    /// <summary>
-    /// Progress until all cells are dead (or only 2 states remain?).
-    /// </summary>
-    public void Run() // TODO: Is this method even necessary?
-    {
-      throw new NotImplementedException();
+      GenerationsCount++;
     }
   }
 }
