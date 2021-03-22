@@ -7,6 +7,14 @@
 
   public class ChanceField : Field, IField
   {
+    /// <summary>
+    /// Create a ChanceField with the given width and height. It's rules 
+    /// differs from the standard field in such way that a cell has a
+    /// chance to become alive with only 2 neighbours if the total 
+    /// age of neighbouring cells is high enough.
+    /// </summary>
+    /// <param name="width">Number of cells in width.</param>
+    /// <param name="height">Number of cells in height.</param>
     public ChanceField(int width, int height) : base(width, height) 
     {
     }
