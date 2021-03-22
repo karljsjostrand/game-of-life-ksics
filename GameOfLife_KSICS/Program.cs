@@ -14,7 +14,9 @@
     static void Main()
     {
       //GameOfLifeFromRandomizedField();
-      GameOfLifeFromDefinedField();
+      //GameOfLifeFromDefinedField();
+
+      GameOfLifeFromChaosField();
     }
 
     static void GameOfLifeFromDefinedField()
@@ -40,16 +42,30 @@
 
       var gameOfLife = new GameOfLife(field);
 
-      var golc = new GameOfLifeController(gameOfLife);
-      golc.Start();
+      new GameOfLifeController(gameOfLife);
     }
 
     static void GameOfLifeFromRandomizedField()
     {
       var gameOfLife = new GameOfLife();
 
-      var golc = new GameOfLifeController(gameOfLife);
-      golc.Start();
+      new GameOfLifeController(gameOfLife);
+    }
+
+    static void GameOfLifeFromChaosField()
+    {
+      var field = new ChanceField(100, 50);
+
+      var rnd = new Random();
+
+      foreach (var cell in field.Cells)
+      {
+        cell.Alive = rnd.NextDouble() >= .5;
+      }
+
+      var gameOfLife = new GameOfLife(field);
+
+      new GameOfLifeController(gameOfLife);
     }
   }
 }

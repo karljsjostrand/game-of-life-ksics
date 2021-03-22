@@ -7,6 +7,10 @@
   public interface ICell
   {
     public bool Alive { get; set; }
+
+    /// <summary>
+    /// Number of generations it's been alive.
+    /// </summary>
     public int Age { get; set; }
   }
 }

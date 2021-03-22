@@ -61,7 +61,7 @@
     {
       var count = 0;
 
-      // Check surrounding cells alive states.
+      // Check the 8 surrounding cells alive states.
       // Clockwise, starting at 12
       if (IsAlive(x, y - 1)) count++; // 12
       if (IsAlive(x + 1, y - 1)) count++; // 13:30
@@ -72,7 +72,7 @@
       if (IsAlive(x - 1, y)) count++; // 21
       if (IsAlive(x - 1, y - 1)) count++; // 22:30
 
-      // TODO: refactor if cases into for loop
+      // TODO: refactor if cases into for loop?
       // Check surrounding cells alive states.
       //for (int i = -1; i < 2; i++)
       //{
@@ -87,14 +87,13 @@
 
     /// <summary>
     /// Get alive state for a cell at x and y. 
-    /// When position is out of bounds, ....
     /// </summary>
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
     /// <returns>
     /// Alive state of cell.
     /// </returns>
-    private bool IsAlive(int x, int y)
+    protected bool IsAlive(int x, int y)
     {
       //// If position is out of bounds.
       //if (x < 0 || x >= Width) return false;

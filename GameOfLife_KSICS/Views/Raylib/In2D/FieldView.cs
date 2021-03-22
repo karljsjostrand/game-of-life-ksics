@@ -7,7 +7,7 @@
   using GameOfLife_KSICS.Models;
   using Raylib_cs;
 
-  class FieldView
+  class FieldView : IView
   {
     private static Color borderColor = Color.BLACK;
     private static Color colorWhenAlive = Color.DARKGRAY;
@@ -17,31 +17,41 @@
     private static Color colorWhenOld = Color.WHITE;
     private static Color colorWhenOlder = Color.GOLD;
 
-    public static void DrawIn2D(IField field, int windowWidth, int windowHeight)
+    public (int Width, int Height) WindowSize { get; set; }
+
+    public FieldView(int windowWidth, int windowHeight)
+    {
+      WindowSize = (windowWidth, windowHeight);
+    }
+
+    public void Draw(IField field)
     {
       Raylib.BeginDrawing();
       Raylib.ClearBackground(borderColor);
 
-      var cellWidth = windowWidth / field.Width - 1;
-      var cellheight = windowHeight / field.Height - 1;
+      var cellWidth = WindowSize.Width / field.Width - 1;
+      var cellheight = WindowSize.Height / field.Height - 1;
 
       for (int y = 0; y < field.Height; y++)
       {
         for (int x = 0; x < field.Width; x++)
         {
-          var posX = x * (windowWidth / field.Width);
-          var posY = y * (windowHeight / field.Height);
+          var posX = x * (WindowSize.Width / field.Width);
+          var posY = y * (WindowSize.Height / field.Height);
 
           // Color according to alive state of cell.
           var color = field.Cells[x, y].Alive ? colorWhenAlive : colorWhenDead;
 
-          // Color by age.
-          if (field.Cells[x, y].Alive && field.Cells[x, y] is Cell)
+          if (field.Cells[x, y].Alive && field.Cells[x, y].Age > 0)
           {
-            if ((field.Cells[x, y] as Cell).Age == 1) color = colorWhenYoung;
-            if ((field.Cells[x, y] as Cell).Age == 2) color = colorWhenAdult;
-            if ((field.Cells[x, y] as Cell).Age == 3) color = colorWhenOld;
-            if ((field.Cells[x, y] as Cell).Age >= 4) color = colorWhenOlder;
+            // Color by age.
+            color = field.Cells[x, y].Age switch
+            {
+              1 => colorWhenYoung,
+              2 => colorWhenAdult,
+              3 => colorWhenOld,
+              _ => colorWhenOlder,
+            };
           }
 
           Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
