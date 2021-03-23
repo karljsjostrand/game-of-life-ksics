@@ -5,6 +5,9 @@
   using System.Collections.Generic;
   using System.Text;
 
+  /// <summary>
+  /// Defines a formation of cells for a two-dimensional field.
+  /// </summary>
   public abstract class CellFormation
   {
     /// <summary>

@@ -27,12 +27,10 @@ namespace GameOfLife_KSICS.Utils.Tests
       var y = centeredCellPosition.y;
 
       field.Cells[x, y].Alive = true;
-      var fileName = "test.json";
+      var fileName = "testFieldState";
 
       var jSONFile = new JSONFile<Field> { FileName = fileName, Data = field };
-      var fullPath = jSONFile.FilePath + fileName;
-
-      File.Delete(fullPath);
+      var fullPath = jSONFile.FilePath + fileName + jSONFile.FileExtension;
 
       FileAssert.DoesNotExist(fullPath);
 
@@ -50,10 +48,10 @@ namespace GameOfLife_KSICS.Utils.Tests
       var y = centeredCellPosition.y;
 
       field.Cells[x, y].Alive = true;
-      var fileName = "test.json";
+      var fileName = "testFieldState";
 
       var jSONSaveFileExpected = new JSONFile<Field> { FileName = fileName, Data = field };
-      var fullPath = jSONSaveFileExpected.FilePath + fileName;
+      var fullPath = jSONSaveFileExpected.FilePath + fileName + jSONSaveFileExpected.FileExtension;
 
       jSONSaveFileExpected.Save();
 

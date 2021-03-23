@@ -8,6 +8,10 @@
   using System.Text;
   using Interfaces;
 
+  /// <summary>
+  /// Saves and loads the state of an object.
+  /// </summary>
+  /// <typeparam name="T">Type of class to save or load.</typeparam>
   public class JSONFile<T>
   {
     public T Data { get; set; } = default;
@@ -26,7 +30,12 @@
     /// Name of file and filename extension.
     /// </summary>
     public string FileName { get; set; } 
-      = $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day} {DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}.json";
+      = $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day} {DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
+
+    /// <summary>
+    /// The file extension part of the full path.
+    /// </summary>
+    public string FileExtension { get; } = ".json";
 
     /// <summary>
     /// Save state of an object to a file at the specified path. 
@@ -34,7 +43,7 @@
     public void Save()
     {
       File.WriteAllText(
-      FilePath + FileName,
+      FilePath + FileName + FileExtension,
       JsonConvert.SerializeObject(Data, Formatting.Indented,
       new JsonSerializerSettings
       {
@@ -52,11 +61,11 @@
     public void Load()
     {
       string data = string.Empty;
-      if (File.Exists(FilePath + FileName))
+      if (File.Exists(FilePath + FileName + FileExtension))
       {
         try
         {
-          data = File.ReadAllText(FilePath + FileName);
+          data = File.ReadAllText(FilePath + FileName + FileExtension);
         }
         catch (Exception ex)
         {

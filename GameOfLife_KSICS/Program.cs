@@ -1,21 +1,16 @@
 ﻿namespace GameOfLife_KSICS
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Numerics;
   using GameOfLife_KSICS.Controllers.Raylib;
-  using GameOfLife_KSICS.Interfaces;
   using GameOfLife_KSICS.Models;
   using GameOfLife_KSICS.Utils.CellFormations;
-  using Raylib_cs;
-  using Utils;
+  using GameOfLife_KSICS.Utils.Extensions;
 
   class Program
   {
     static void Main()
     {
-      //GameOfLifeFromRandomizedField();
-      GameOfLifeFromDefinedField();
+      //GameOfLifeFromDefinedField();
+      GameOfLifeFromRandomizedField();
     }
 
     static void GameOfLifeFromDefinedField()

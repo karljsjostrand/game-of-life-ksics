@@ -15,7 +15,7 @@
     public int Height { get; private set; }
 
     /// <summary>
-    /// Create a field with the given width and height.
+    /// Create a field of the given width and height and initialize cells.
     /// </summary>
     /// <param name="width">Number of cells in width.</param>
     /// <param name="height">Number of cells in height.</param>
@@ -23,23 +23,16 @@
     {
       Width = width;
       Height = height;
-      Cells = InitializeCells(Cells, width, height);
+      Cells = InitializeCells(Cells);
     }
 
-    /// <summary>
-    /// Initialize the cells of a two dimensional cell array.
-    /// </summary>
-    /// <param name="cells">Cell array to be initialized.</param>
-    /// <param name="width">Number of cells in width.</param>
-    /// <param name="height">Number of cells in height.</param>
-    /// <returns>The initialized cell array.</returns>
-    public Cell[,] InitializeCells(Cell[,] cells, int width, int height)
+    public Cell[,] InitializeCells(Cell[,] cells)
     {
-      cells = new Cell[width, height];
+      cells = new Cell[Width, Height];
 
-      for (int y = 0; y < height; y++)
+      for (int y = 0; y < Height; y++)
       {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
           cells[x, y] = new Cell();
         }
@@ -48,15 +41,6 @@
       return cells;
     }
 
-    /// <summary>
-    /// Get a cells number of living neighbours. 
-    /// </summary>
-    /// <param name="x">Horizontal position on the field.</param>
-    /// <param name="y">Vertical position on the field.</param>
-    /// <returns>
-    /// Amount of neighbours alive next to this position, 
-    /// vertically, horizontally, or diagonally, 0 to 8. 
-    /// </returns>
     public int GetNeighboursCount(int x, int y)
     {
       var count = 0;
@@ -88,16 +72,6 @@
       return Cells[(x + Width) % Width, (y + Height) % Height].Alive;
     }
 
-    /// <summary>
-    /// Get the next cell at this position based on current cells alive state
-    /// and count of living neighbours.
-    /// </summary>
-    /// <param name="x">Horizontal position on the field.</param>
-    /// <param name="y">Vertical position on the field.</param>
-    /// <param name="neighboursCount">
-    /// Count of living neighbours to this cell.
-    /// </param>
-    /// <returns>The next generations cell at this position in the field.</returns>
     public Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive
@@ -119,19 +93,6 @@
     }
 
     /// <summary>
-    /// Add a formation of cells to the field.
-    /// </summary>
-    /// <param name="cellformation">Positions of cells that shape the cellformation.</param>
-    /// <param name="pos">Where to position the cell formations upper left corner.</param>
-    public void AddCellFormation(CellFormation cellformation, (int x, int y) pos)
-    {
-      foreach (var cell in cellformation.CellPositions)
-      {
-        Cells[(pos.x + cell.x + Width) % Width, (pos.y + cell.y + Height) % Height].Alive = true;
-      }
-    }
-
-    /// <summary>
     /// // Create a string representation of the fields alive states and ages.
     /// </summary>
     /// <returns>The fields alive states and ages in rows and columns as they are positioned in the field.</returns>
@@ -143,7 +104,7 @@
       {
         for (int x = 0; x < Width; x++)
         {
-          // alive + age
+          // Alive + Age
           fieldStr += (Convert.ToInt32(Cells[x, y].Alive) + Cells[x, y].Age) + " ";
         }
         fieldStr += "\n";

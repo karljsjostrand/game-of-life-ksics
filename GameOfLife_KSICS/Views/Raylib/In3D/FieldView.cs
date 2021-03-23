@@ -22,6 +22,11 @@
 
     private Camera3D camera = new Camera3D();
 
+    /// <summary>
+    /// Create an instance of a field view that can draw in 3D.
+    /// </summary>
+    /// <param name="windowWidth">Width in pixels of window where is drawn.</param>
+    /// <param name="windowHeight">Height in pixels of window where is drawn.</param>
     public FieldView(int windowWidth, int windowHeight)
     {
       WindowSize = (windowWidth, windowHeight);
@@ -87,6 +92,7 @@
               };
             }
 
+            // Draw the cell representation.
             Raylib.DrawCube(pos, cellWidth, 10, cellheight, color); 
           }
         }
@@ -95,7 +101,6 @@
       Raylib.EndMode3D();
 
       Raylib.DrawFPS(5, 5);
-      //Raylib.DrawText();
 
       Raylib.EndDrawing();
     }

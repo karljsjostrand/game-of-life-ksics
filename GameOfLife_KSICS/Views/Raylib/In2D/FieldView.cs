@@ -19,6 +19,11 @@
 
     public (int Width, int Height) WindowSize { get; set; }
 
+    /// <summary>
+    /// Create an instance of a field view that can draw in 2D.
+    /// </summary>
+    /// <param name="windowWidth">Width of drawable space in pixels.</param>
+    /// <param name="windowHeight">Height of drawable space in pixels.</param>
     public FieldView(int windowWidth, int windowHeight)
     {
       WindowSize = (windowWidth, windowHeight);
@@ -54,6 +59,7 @@
             };
           }
 
+          // Draw the cell representation.
           Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
         }
       }

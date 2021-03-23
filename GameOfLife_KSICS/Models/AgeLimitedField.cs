@@ -24,33 +24,33 @@
     }
 
     /// <summary>
-    /// Get the next cell at this position based on current cells alive state
-    /// and count of living neighbours, and age.
+    /// Get the next cell at this position based on current cells alive state, 
+    /// count of living neighbours, and the cells age.
     /// </summary>
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
     /// <param name="neighboursCount">
-    /// Count of living neighbours to this cell.
+    /// This position's count of living neighbours.
     /// </param>
-    /// <returns>The next generations cell at this position in the field.</returns>
+    /// <returns>Next generations cell at this position.</returns>
     public new Cell NextCell(int x, int y, int neighboursCount)
     {
-      // For Under- or overpopulation, don't need set age nor is it alive
+      // For Under- or overpopulation, don't need set age nor is it alive.
       var nextCell = new Cell();
 
-      // Stay alive
+      // Stay alive.
       if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
         nextCell.Age = Cells[x, y].Age + 1;
       }
-      // Bring alive
+      // Bring alive.
       else if (neighboursCount == 3 && !Cells[x, y].Alive)
       {
         nextCell.Alive = true;
       }
 
-      // Age limit
+      // Age limit.
       if (Cells[x, y].Age > AgeLimit)
       {
         nextCell.Alive = false;

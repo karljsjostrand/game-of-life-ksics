@@ -1,9 +1,7 @@
 ﻿namespace GameOfLife_KSICS.Utils.CellFormations
 {
   using GameOfLife_KSICS.Abstracts;
-  using System;
   using System.Collections.Generic;
-  using System.Text;
 
   class Beacon : CellFormation
   {

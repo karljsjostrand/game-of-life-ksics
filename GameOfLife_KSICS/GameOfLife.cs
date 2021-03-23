@@ -2,24 +2,34 @@
 {
   using GameOfLife_KSICS.Interfaces;
   using GameOfLife_KSICS.Models;
+  using GameOfLife_KSICS.Utils;
   using System;
-  using System.Collections.Generic;
-  using System.Text;
 
   public class GameOfLife
   {
+    /// <summary>
+    /// Holds most the games states, most importantly, the cells, 
+    /// and the methods that dictates how they are changed on new 
+    /// generations. 
+    /// </summary>
     public IField Field { get; private set; }
+
+    /// <summary>
+    /// Current generation. 
+    /// Starts at 0 and is increased by 1 on each next generation. 
+    /// </summary>
     public int GenerationsCount { get; private set; } = 0;
 
     /// <summary>
-    /// Create an instance with a field of randomized width, height, and initial alive states. 
+    /// Create an instance with a field of randomized width, height, and 
+    /// cells, with a 50/50 chance for each cell in the field to be 
+    /// initialized alive. 
     /// </summary>
-    public GameOfLife()
+    /// <param name="minSize"></param>
+    /// <param name="maxSize"></param>
+    public GameOfLife(int minSize = 20, int maxSize = 100)
     {
       var rnd = new Random();
-
-      var minSize = 20;
-      var maxSize = 100;
 
       var width = rnd.Next(minSize, maxSize);
       var height = rnd.Next(minSize, maxSize / 2);
@@ -35,11 +45,16 @@
     }
 
     /// <summary>
-    /// Create an instance with a field of given width and height and randomized cells.
+    /// Create an instance with a field of given width and height and 
+    /// randomized cells, with the given chance for each cell in the 
+    /// field to be initialized alive.
     /// </summary>
     /// <param name="width">Width of it's field in number of cells.</param>
     /// <param name="height">Height of it's field in number of cells.</param>
-    public GameOfLife(int width, int height)
+    /// <param name="chance">
+    /// Chance for each in the field to be alive initially.
+    /// </param>
+    public GameOfLife(int width, int height, double chance)
     {
       var rnd = new Random();
 
@@ -47,7 +62,7 @@
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = rnd.NextDouble() >= .5;
+        cell.Alive = rnd.NextDouble() >= chance;
       }
 
       Field = field;
@@ -63,22 +78,23 @@
     }
 
     /// <summary>
-    /// Create an instance with a given field from a file.
+    /// Create an instance with a field from a file at default saved states folder.
     /// </summary>
-    /// <param name="path">Path to and including file name.</param>
-    public GameOfLife(string path)
+    /// <param name="fileName">File name, file extension excluded.</param>
+    public GameOfLife(string fileName)
     {
-      throw new NotImplementedException();
+      var jsonFile = new JSONFile<Field> { FileName = fileName };
+      jsonFile.Load();
 
-      // TODO: load field from file - unpack string into a Field object
+      Field = jsonFile.Data;
     }
 
     /// <summary>
-    /// Step field state to next generation. 
+    /// Step the state of the game to next generation. 
     /// </summary>
     public void NextGeneration()
     {
-      Field.NextCells = Field.InitializeCells(Field.NextCells, Field.Width, Field.Height);
+      Field.NextCells = Field.InitializeCells(Field.NextCells);
 
       for (int y = 0; y < Field.Height; y++)
       {

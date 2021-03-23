@@ -7,14 +7,54 @@
 
   public interface IField
   {
+    /// <summary>
+    /// Current generation of cells.
+    /// </summary>
     public Cell[,] Cells { get; set; }
+
+    /// <summary>
+    /// Next generation of cells.
+    /// </summary>
     public Cell[,] NextCells { get; set; }
 
+    /// <summary>
+    /// Width in number of cells.
+    /// </summary>
     public int Width { get; }
+
+    /// <summary>
+    /// Height in number of cells.
+    /// </summary>
     public int Height { get; }
 
-    public Cell[,] InitializeCells(Cell[,] cells, int width, int height);
-    public Cell NextCell(int x, int y, int neighboursCount);
+    /// <summary>
+    /// Initializes an array of cells with default property values.
+    /// </summary>
+    /// <param name="cells">Array to initialize.</param>
+    /// <returns>Initialized array of cells.</returns>
+    public Cell[,] InitializeCells(Cell[,] cells);
+
+    /// <summary>
+    /// Get a cells number of living neighbours. 
+    /// </summary>
+    /// <param name="x">Horizontal position on the field.</param>
+    /// <param name="y">Vertical position on the field.</param>
+    /// <returns>
+    /// Amount of neighbours alive next to this position, 
+    /// vertically, horizontally, or diagonally, 0 to 8. 
+    /// </returns>
     public int GetNeighboursCount(int x, int y);
+
+    /// <summary>
+    /// Get the next cell at this position based on current cells alive state
+    /// and count of living neighbours.
+    /// </summary>
+    /// <param name="x">Horizontal position on the field.</param>
+    /// <param name="y">Vertical position on the field.</param>
+    /// <param name="neighboursCount">
+    /// This position's count of living neighbours.
+    /// </param>
+    /// <returns>Next generations cell at this position.</returns>
+    public Cell NextCell(int x, int y, int neighboursCount);
   }
 }

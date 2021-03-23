@@ -51,29 +51,29 @@
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
     /// <param name="neighboursCount">
-    /// Count of living neighbours to this cell.
+    /// This position's count of living neighbours.
     /// </param>
-    /// <returns>The next generations cell at this position in the field.</returns>
+    /// <returns>Next generations cell at this position.</returns>
     public new Cell NextCell(int x, int y, int neighboursCount)
     {
-      // For Under- or overpopulation, don't need set age nor is it alive
+      // For Under- or overpopulation, don't need set age nor is it alive.
       var nextCell = new Cell();
       var rnd = new Random();
       var totalHighAge = 64;
       var chance = .01;
 
-      // Stay alive
+      // Stay alive.
       if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
         nextCell.Age = Cells[x, y].Age + 1;
       }
-      // Bring alive when 3 neighbours
+      // Bring alive when 3 neighbours.
       else if (neighboursCount == 3 && !Cells[x, y].Alive)
       {
         nextCell.Alive = true;
       }
-      // 1% Chance to bring alive when 2 neighbours and total age is high
+      // 1% Chance to bring alive when 2 neighbours and total age is high.
       else if (neighboursCount == 2 && !Cells[x, y].Alive && GetTotalAgeOfNeighbours(x, y) > totalHighAge)
       {
         nextCell.Alive = rnd.NextDouble() <= chance;
