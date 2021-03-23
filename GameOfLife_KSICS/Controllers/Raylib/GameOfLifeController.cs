@@ -20,6 +20,7 @@
     private static readonly int defaultTargetFps = 10;
     private static readonly int cellSizeInPixels = 16;
     private static readonly string title = "Game of Life";
+    private static readonly string saveFieldStateName = "SavedFieldState.json";
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
@@ -78,25 +79,43 @@
       // Sets a new pre-defined game of life
       HandleUserSetsNewPreDefinedGame();
 
-      // TODO: Saves state of field to a file.
-      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
-      {
-        throw new NotImplementedException();
+      // Saves state of field to a file.
+      HandleUserSavesFieldState();
 
-        // Create a field file and save it
-        var fieldFile = new FieldFile(gameOfLife.Field);
-        fieldFile.Save();
-
-        //var field = new FieldFile(path).Load();
-
-
-        gameOfLife.SaveFieldToFile("path?");
-      }
+      // Loads a state of a field into game.
+      HandleUserLoadsFieldState();
 
       // Prints current state of field to console.
       HandleUserPrintsFieldToConsole();
 
+      // Sets update frequency.
       HandleUserSetsUpdateFrequency();
+    }
+
+    private void HandleUserSavesFieldState()
+    {
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
+      {
+        // Create a field file and save it
+        var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (gameOfLife.Field as Field) };
+        jsonFile.Save();
+      }
+    }
+
+    private void HandleUserLoadsFieldState()
+    {
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F9) || Raylib.IsKeyPressed(KeyboardKey.KEY_L))
+      {
+        var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName };
+        jsonFile.Load();
+
+        var field = jsonFile.Data;
+        gameOfLife = new GameOfLife(field);
+
+        view.WindowSize = (WindowWidth, WindowHeight);
+
+        Raylib.SetWindowSize(WindowWidth, WindowHeight);
+      }
     }
 
     private void HandleUserPrintsFieldToConsole()

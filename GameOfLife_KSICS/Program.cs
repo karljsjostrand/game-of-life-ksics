@@ -4,6 +4,7 @@
   using System.Collections.Generic;
   using System.Numerics;
   using GameOfLife_KSICS.Controllers.Raylib;
+  using GameOfLife_KSICS.Interfaces;
   using GameOfLife_KSICS.Models;
   using GameOfLife_KSICS.Utils.CellFormations;
   using Raylib_cs;
@@ -13,18 +14,28 @@
   {
     static void Main()
     {
-      //Field field = new Field(20, 20);
-      //field.Cells[10, 10].Alive = true;
-
-      //var fieldFile = new FieldFile(field);
-
-      //fieldFile.Save();
-
+      GameOfLifeFromOldAgeField();
 
       //GameOfLifeFromRandomizedField();
       //GameOfLifeFromDefinedField();
 
       //GameOfLifeFromChanceField();
+    }
+
+    static void GameOfLifeFromOldAgeField()
+    {
+      var field = new OldAgeField(100, 50);
+
+      var rnd = new Random();
+
+      foreach (var cell in field.Cells)
+      {
+        cell.Alive = rnd.NextDouble() >= .5;
+      }
+
+      var gameOfLife = new GameOfLife(field);
+
+      new GameOfLifeController(gameOfLife);
     }
 
     static void GameOfLifeFromDefinedField()

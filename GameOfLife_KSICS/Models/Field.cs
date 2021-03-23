@@ -8,8 +8,8 @@
 
   public class Field : IField
   {
-    public ICell[,] Cells { get; set; }
-    public ICell[,] NextCells { get; set; }
+    public Cell[,] Cells { get; set; }
+    public Cell[,] NextCells { get; set; }
 
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -33,7 +33,7 @@
     /// <param name="width">Number of cells in width.</param>
     /// <param name="height">Number of cells in height.</param>
     /// <returns>The initialized cell array.</returns>
-    public ICell[,] InitializeCells(ICell[,] cells, int width, int height)
+    public Cell[,] InitializeCells(Cell[,] cells, int width, int height)
     {
       cells = new Cell[width, height];
 
@@ -112,7 +112,7 @@
     /// Count of living neighbours to this cell.
     /// </param>
     /// <returns>The next cell at this position in the field.</returns>
-    public ICell NextCell(int x, int y, int neighboursCount)
+    public Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();

@@ -5,9 +5,13 @@
   using System.Collections.Generic;
   using System.Text;
 
-  public class Cell : ICell
+  public class Cell
   {
     public bool Alive { get; set; } = false;
+
+    /// <summary>
+    /// Number of generations it's been alive.
+    /// </summary>
     public int Age { get; set; } = 0;
 
     /// <summary>

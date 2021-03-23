@@ -74,22 +74,6 @@
     }
 
     /// <summary>
-    /// Save state of field to a file at the given path.
-    /// </summary>
-    /// <param name="path">Desired location of file.</param>
-    /// <returns>true if state is successfully saved, false otherwise.</returns>
-    public bool SaveFieldToFile(string path)
-    {
-      throw new NotImplementedException();
-
-      var fileName = DateTime.Now + ".txt";
-
-      var fileContents = Field.ToString();
-
-      // TODO: save string to .txt file?
-    }
-
-    /// <summary>
     /// Step field state to next generation. 
     /// </summary>
     public void NextGeneration()

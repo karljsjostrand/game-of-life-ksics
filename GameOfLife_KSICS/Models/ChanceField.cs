@@ -54,7 +54,7 @@
     /// Count of living neighbours to this cell.
     /// </param>
     /// <returns>The next cell at this position in the field.</returns>
-    public new ICell NextCell(int x, int y, int neighboursCount)
+    public new Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();
