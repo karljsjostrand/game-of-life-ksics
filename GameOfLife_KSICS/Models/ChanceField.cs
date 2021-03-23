@@ -53,7 +53,7 @@
     /// <param name="neighboursCount">
     /// Count of living neighbours to this cell.
     /// </param>
-    /// <returns>The next cell at this position in the field.</returns>
+    /// <returns>The next generations cell at this position in the field.</returns>
     public new Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive

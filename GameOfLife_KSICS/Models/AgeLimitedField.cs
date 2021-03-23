@@ -5,9 +5,21 @@
   using System.Collections.Generic;
   using System.Text;
 
-  class OldAgeField : Field, IField
+  class AgeLimitedField : Field, IField
   {
-    public OldAgeField(int width, int height) : base(width, height)
+    /// <summary>
+    /// A cells age limit.
+    /// </summary>
+    public static int AgeLimit { get; } = 100;
+
+    /// <summary>
+    /// Create an OldAgeField with the given width and height. It's rules 
+    /// differs from the standard field in such way that a cell dies
+    /// when its age is past the specified age limit. 
+    /// </summary>
+    /// <param name="width">Number of cells in width.</param>
+    /// <param name="height">Number of cells in height.</param>
+    public AgeLimitedField(int width, int height) : base(width, height)
     {
     }
 
@@ -20,7 +32,7 @@
     /// <param name="neighboursCount">
     /// Count of living neighbours to this cell.
     /// </param>
-    /// <returns>The next cell at this position in the field.</returns>
+    /// <returns>The next generations cell at this position in the field.</returns>
     public new Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive
@@ -38,8 +50,8 @@
         nextCell.Alive = true;
       }
 
-      // Old age
-      if (Cells[x, y].Age > 50)
+      // Age limit
+      if (Cells[x, y].Age > AgeLimit)
       {
         nextCell.Alive = false;
       }

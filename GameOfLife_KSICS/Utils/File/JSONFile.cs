@@ -11,6 +11,10 @@
   public class JSONFile<T>
   {
     public T Data { get; set; } = default;
+
+    /// <summary>
+    /// Path to folder where saved states are stored.
+    /// </summary>
     public string FilePath { get; set; }
       = Path.Combine(
           Path.Combine(
@@ -18,11 +22,14 @@
               Environment.SpecialFolder.MyDocuments),
             "GOL_KSICS\\"));
 
+    /// <summary>
+    /// Name of file and filename extension.
+    /// </summary>
     public string FileName { get; set; } 
       = $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day} {DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}.json";
-    
+
     /// <summary>
-    /// Save state of an object to at file at the given path.
+    /// Save state of an object to a file at the specified path. 
     /// </summary>
     public void Save()
     {
@@ -39,6 +46,9 @@
       );
     }
 
+    /// <summary>
+    /// Load state of an object from specified path.
+    /// </summary>
     public void Load()
     {
       string data = string.Empty;

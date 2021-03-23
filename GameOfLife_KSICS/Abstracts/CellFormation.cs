@@ -27,7 +27,7 @@
 
     /// <summary>
     /// Called in constructor.
-    /// Set and add cell positions.
+    /// Sets and adds cell positions of the formation.
     /// </summary>
     public abstract void AddCells();
   }

@@ -2,6 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
   using System.Numerics;
   using System.Text;
   using GameOfLife_KSICS.Interfaces;
@@ -22,12 +23,26 @@
     private static readonly string title = "Game of Life";
     private static readonly string saveFieldStateName = "SavedFieldState.json";
 
+    private static Dictionary<string, string> InterfaceInstructions = new Dictionary<string, string>()
+    {
+      { "F1", "new random" },
+      { "F2", "load pre-defined #1" },
+      { "F3", "load pre-defined #2" },
+      { "F5", "save state" },
+      { "F6", "print state" },
+      { "F9", "load saved state" },
+      { "Space", "pause" },
+      { "Right", "step to next gen" },
+      { "1-2", "hold to slow down" },
+      { "3-4", "hold to speed up" },
+    };
+
     private bool update = true;
     private int targetFps = defaultTargetFps;
 
     private int WindowWidth => gameOfLife.Field.Width * cellSizeInPixels;
     private int WindowHeight => gameOfLife.Field.Height * cellSizeInPixels;
-
+    
     /// <summary>
     /// Create a user interface and a view for a Game of Life.
     /// </summary>
@@ -39,7 +54,19 @@
       // Set view
       view = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
 
+      WriteInterfaceInstructions();
+
       Start();
+    }
+
+    private static void WriteInterfaceInstructions()
+    {
+      Console.WriteLine(" - Interface instructions -");
+      foreach (var instruction in InterfaceInstructions)
+      {
+        Console.WriteLine($" {instruction.Key}:\t{instruction.Value}");
+      }
+      Console.WriteLine();
     }
 
     private void Start()
@@ -58,12 +85,9 @@
         HandleUserInput();
         #endregion
 
-
         #region Update
         if (update) gameOfLife.NextGeneration();
         #endregion
-
-        
       }
       Raylib.CloseWindow();
     }
@@ -73,11 +97,15 @@
       // Pauses updating.
       HandleUserPausingOrResuming();
 
+      // Pauses updating and steps to next generation
+      HandleUserSteppingToNextGen();
+
       // Sets a new random game of life
       HandleUserSetsNewRandomGame();
 
       // Sets a new pre-defined game of life
-      HandleUserSetsNewPreDefinedGame();
+      HandleUserSetsNewPreDefined1();
+      HandleUserSetsNewPreDefined2();
 
       // Saves state of field to a file.
       HandleUserSavesFieldState();
@@ -85,11 +113,23 @@
       // Loads a state of a field into game.
       HandleUserLoadsFieldState();
 
-      // Prints current state of field to console.
-      HandleUserPrintsFieldToConsole();
+      // Prints current state of field.
+      HandleUserPrintsFieldState();
 
       // Sets update frequency.
       HandleUserSetsUpdateFrequency();
+    }
+
+    private void HandleUserSteppingToNextGen()
+    {
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_RIGHT) || Raylib.IsKeyPressed(KeyboardKey.KEY_TAB))
+      {
+        update = false;
+
+        gameOfLife.NextGeneration();
+
+        Console.WriteLine($"Stepped to next generation {gameOfLife.GenerationsCount}.");
+      }
     }
 
     private void HandleUserSavesFieldState()
@@ -99,6 +139,7 @@
         // Create a field file and save it
         var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (gameOfLife.Field as Field) };
         jsonFile.Save();
+        Console.WriteLine("Saved state.");
       }
     }
 
@@ -112,17 +153,20 @@
         var field = jsonFile.Data;
         gameOfLife = new GameOfLife(field);
 
+        // Set new view
         view.WindowSize = (WindowWidth, WindowHeight);
 
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
+        Console.WriteLine("Loaded saved state.");
       }
     }
 
-    private void HandleUserPrintsFieldToConsole()
+    private void HandleUserPrintsFieldState()
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F6) || Raylib.IsKeyPressed(KeyboardKey.KEY_P))
       {
         Console.WriteLine(gameOfLife.Field.ToString());
+        Debug.WriteLine(gameOfLife.Field.ToString());
       }
     }
 
@@ -131,8 +175,8 @@
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
       {
         update = !update;
-        if (update) Console.WriteLine("Updating.");
-        else Console.WriteLine("Updating paused.");
+        if (update) Console.WriteLine("Resumed.");
+        else        Console.WriteLine("Paused.");
       }
     }
 
@@ -142,15 +186,17 @@
       {
         gameOfLife = new GameOfLife();
 
+        // Set new view
         view.WindowSize = (WindowWidth, WindowHeight);
 
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
+        Console.WriteLine("New randomized.");
       }
     }
 
-    private void HandleUserSetsNewPreDefinedGame()
+    private void HandleUserSetsNewPreDefined1() // TODO load from file
     {
-      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F2) || Raylib.IsKeyPressed(KeyboardKey.KEY_N))
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F2))
       {
         var field = new Field(80, 40);
 
@@ -173,9 +219,20 @@
 
         gameOfLife = new GameOfLife(field);
 
+        // Set new view
         view.WindowSize = (WindowWidth, WindowHeight);
 
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
+        Console.WriteLine("Loaded pre-defined #1.");
+      }
+    }
+
+    private void HandleUserSetsNewPreDefined2() // TODO load from file
+    {
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F3))
+      {
+
+        Console.WriteLine("Loaded pre-defined #2.");
       }
     }
 

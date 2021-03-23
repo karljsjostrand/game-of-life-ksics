@@ -7,6 +7,7 @@
   using GameOfLife_KSICS.Interfaces;
   using Raylib_cs;
 
+  // TODO: Camera and window size is bad.
   class FieldView : IView
   {
     private static Color backgroundColor = Color.BLACK;
@@ -16,8 +17,6 @@
     private static Color colorWhenAdult = Color.LIGHTGRAY;
     private static Color colorWhenOld = Color.WHITE;
     private static Color colorWhenOlder = Color.GOLD;
-
-    //public 
 
     public (int Width, int Height) WindowSize { get; set; }
 

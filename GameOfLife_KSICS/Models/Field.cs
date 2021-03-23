@@ -72,16 +72,6 @@
       if (IsAlive(x - 1, y)) count++; // 21
       if (IsAlive(x - 1, y - 1)) count++; // 22:30
 
-      // TODO: refactor if cases into for loop?
-      // Check surrounding cells alive states.
-      //for (int i = -1; i < 2; i++)
-      //{
-      //  for (int j = -1; j < 2; j++)
-      //  {
-      //    if (IsAlive(x + i, y + j) && (i != 0 && j != 0)) count++;
-      //  }
-      //}
-
       return count;
     }
 
@@ -95,10 +85,6 @@
     /// </returns>
     protected bool IsAlive(int x, int y)
     {
-      //// If position is out of bounds.
-      //if (x < 0 || x >= Width) return false;
-      //if (y < 0 || y >= Height) return false;
-
       return Cells[(x + Width) % Width, (y + Height) % Height].Alive;
     }
 
@@ -111,7 +97,7 @@
     /// <param name="neighboursCount">
     /// Count of living neighbours to this cell.
     /// </param>
-    /// <returns>The next cell at this position in the field.</returns>
+    /// <returns>The next generations cell at this position in the field.</returns>
     public Cell NextCell(int x, int y, int neighboursCount)
     {
       // For Under- or overpopulation, don't need set age nor is it alive

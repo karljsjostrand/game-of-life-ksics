@@ -14,28 +14,8 @@
   {
     static void Main()
     {
-      GameOfLifeFromOldAgeField();
-
       //GameOfLifeFromRandomizedField();
-      //GameOfLifeFromDefinedField();
-
-      //GameOfLifeFromChanceField();
-    }
-
-    static void GameOfLifeFromOldAgeField()
-    {
-      var field = new OldAgeField(100, 50);
-
-      var rnd = new Random();
-
-      foreach (var cell in field.Cells)
-      {
-        cell.Alive = rnd.NextDouble() >= .5;
-      }
-
-      var gameOfLife = new GameOfLife(field);
-
-      new GameOfLifeController(gameOfLife);
+      GameOfLifeFromDefinedField();
     }
 
     static void GameOfLifeFromDefinedField()
@@ -67,22 +47,6 @@
     static void GameOfLifeFromRandomizedField()
     {
       var gameOfLife = new GameOfLife();
-
-      new GameOfLifeController(gameOfLife);
-    }
-
-    static void GameOfLifeFromChanceField()
-    {
-      var field = new ChanceField(100, 50);
-
-      var rnd = new Random();
-
-      foreach (var cell in field.Cells)
-      {
-        cell.Alive = rnd.NextDouble() >= .5;
-      }
-
-      var gameOfLife = new GameOfLife(field);
 
       new GameOfLifeController(gameOfLife);
     }
