@@ -13,10 +13,18 @@
   {
     static void Main()
     {
+      //Field field = new Field(20, 20);
+      //field.Cells[10, 10].Alive = true;
+
+      //var fieldFile = new FieldFile(field);
+
+      //fieldFile.Save();
+
+
       //GameOfLifeFromRandomizedField();
       //GameOfLifeFromDefinedField();
 
-      GameOfLifeFromChaosField();
+      //GameOfLifeFromChanceField();
     }
 
     static void GameOfLifeFromDefinedField()
@@ -52,7 +60,7 @@
       new GameOfLifeController(gameOfLife);
     }
 
-    static void GameOfLifeFromChaosField()
+    static void GameOfLifeFromChanceField()
     {
       var field = new ChanceField(100, 50);
 

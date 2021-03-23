@@ -85,7 +85,10 @@
 
         // Create a field file and save it
         var fieldFile = new FieldFile(gameOfLife.Field);
-        fieldFile.Save("path?");
+        fieldFile.Save();
+
+        //var field = new FieldFile(path).Load();
+
 
         gameOfLife.SaveFieldToFile("path?");
       }
