@@ -13,7 +13,7 @@
     private static readonly int defaultTargetFps = 10;
     private static readonly int cellSizeInPixels = 16;
     private static readonly string title = "Game of Life";
-    private static readonly string saveFieldStateName = "SavedFieldState.json";
+    private static readonly string saveFieldStateName = "SavedFieldState";
 
     private static readonly Dictionary<string, string> InterfaceInstructions = new Dictionary<string, string>()
     {
@@ -141,6 +141,8 @@
       view.WindowSize = (WindowWidth, WindowHeight);
 
       Raylib.SetWindowSize(WindowWidth, WindowHeight);
+
+      Console.WriteLine($"Loaded saved state from {jsonFile.FilePath + jsonFile.FileName + jsonFile.FileExtension}.");
     }
 
     #region User input handling
@@ -164,7 +166,7 @@
         var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (gameOfLife.Field as Field) };
         jsonFile.Save();
 
-        Console.WriteLine("Saved state.");
+        Console.WriteLine($"Saved state to {jsonFile.FilePath + jsonFile.FileName + jsonFile.FileExtension}.");
       }
     }
 
@@ -173,8 +175,6 @@
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F9) || Raylib.IsKeyPressed(KeyboardKey.KEY_L))
       {
         LoadFromFile(saveFieldStateName);
-
-        Console.WriteLine("Loaded saved state.");
       }
     }
 
@@ -218,9 +218,7 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F2))
       {
-        LoadFromFile("PreDefinedState1.json");
-
-        Console.WriteLine("Loaded pre-defined #1.");
+        LoadFromFile("PreDefinedState1");
       }
     }
 
@@ -228,9 +226,7 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F3))
       {
-        LoadFromFile("PreDefinedState2.json");
-
-        Console.WriteLine("Loaded pre-defined #2.");
+        LoadFromFile("PreDefinedState2");
       }
     }
 
