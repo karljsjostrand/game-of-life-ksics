@@ -34,7 +34,7 @@
     public Cell[,] InitializedCells();
 
     /// <summary>
-    /// Get a cells number of living neighbours. 
+    /// Get a positions number of living neighbours. 
     /// </summary>
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>

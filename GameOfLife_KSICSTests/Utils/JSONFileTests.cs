@@ -13,6 +13,9 @@ namespace GameOfLife_KSICS.Utils.Tests
     Field field;
     (int x, int y) centeredCellPosition;
 
+    /// <summary>
+    /// Setup a new field and set named positions for the field.
+    /// </summary>
     [SetUp()]
     public void Setup()
     {
@@ -20,6 +23,10 @@ namespace GameOfLife_KSICS.Utils.Tests
       centeredCellPosition = (fieldWidth / 2, fieldHeight / 2);
     }
 
+    /// <summary>
+    /// Should create a saved field state file.
+    /// Save test file is deleted at the end of the test.
+    /// </summary>
     [Test()]
     public void SaveTest()
     {
@@ -34,13 +41,18 @@ namespace GameOfLife_KSICS.Utils.Tests
 
       FileAssert.DoesNotExist(fullPath);
 
-      jSONFile.Save();
+      Assert.IsTrue(jSONFile.Save(), "Did not save.");
 
       FileAssert.Exists(fullPath);
 
       File.Delete(fullPath);
     }
 
+    /// <summary>
+    /// Should create a saved a field state file and then load the file. The 
+    /// field state loaded should then be asserted equal to the one saved.
+    /// Save test file is deleted at the end of the test.
+    /// </summary>
     [Test()]
     public void LoadTest()
     {
@@ -53,10 +65,10 @@ namespace GameOfLife_KSICS.Utils.Tests
       var jSONSaveFileExpected = new JSONFile<Field> { FileName = fileName, Data = field };
       var fullPath = jSONSaveFileExpected.DirPath + fileName + jSONSaveFileExpected.FileExtension;
 
-      jSONSaveFileExpected.Save();
+      Assert.IsTrue(jSONSaveFileExpected.Save(), "Did not save.");
 
       var jSONLoadFileActual = new JSONFile<Field> { FileName = fileName };
-      jSONLoadFileActual.Load();
+      Assert.IsTrue(jSONLoadFileActual.Load(), "Did not load.");
 
       var expected = jSONSaveFileExpected.Data.ToString();
       var actual = jSONLoadFileActual.Data.ToString();

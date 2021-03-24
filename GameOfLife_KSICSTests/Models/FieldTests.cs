@@ -8,8 +8,10 @@ namespace GameOfLife_KSICS.Models.Tests
   [TestFixture()]
   public class FieldTests
   {
+    // Let's not change these field dimensions, as some test case arguments depend on these values. 
     static readonly int fieldWidth = 80;
     static readonly int fieldHeight = 40;
+
     Field field;
     (int x, int y) centeredCellPosition;
     (int x, int y) topLeftCornerCellPosition;
@@ -17,6 +19,9 @@ namespace GameOfLife_KSICS.Models.Tests
     (int x, int y) btmLeftCornerCellPosition;
     (int x, int y) btmRightCornerCellPosition;
 
+    /// <summary>
+    /// Setup a new field and set named positions for the field.
+    /// </summary>
     [SetUp()]
     public void Setup()
     {
@@ -30,20 +35,28 @@ namespace GameOfLife_KSICS.Models.Tests
     }
 
     /// <summary>
-    /// Should return 0 when no neighbours alive. 
+    /// Should count 0 neighbours for every position on the field when no cells alive. 
     /// </summary>
     [Test()]
-    public void GetNeighoursCountTest_ShouldReturnZero_WhenNoNeighoursAlive()
+    public void NeighoursCountTest_ShouldReturnZero_WhenNoNeighoursAlive()
     {
-      var x = centeredCellPosition.x;
-      var y = centeredCellPosition.y;
+      for (int y = 0; y < field.Height; y++)
+      {
+        for (int x = 0; x < field.Width; x++)
+        {
+          var expected = 0;
+          var actual = field.NeighboursCount(x, y);
 
-      var expected = 0;
-      var actual = field.NeighboursCount(x, y);
-
-      Assert.AreEqual(expected, actual);
+          Assert.AreEqual(expected, actual);
+        }
+      }
     }
 
+    /// <summary>
+    /// Should count 1 alive neighbour. 
+    /// </summary>
+    /// <param name="neighbourX">Horizontal position of the neighbour.</param>
+    /// <param name="neighbourY">Vertical position of the neighbour.</param>
     [Test()]
     [TestCase(40, 19)] // the above neighbour, 12 o clock
     [TestCase(41, 19)] // 13:30
@@ -53,7 +66,7 @@ namespace GameOfLife_KSICS.Models.Tests
     [TestCase(39, 21)] // 19:30
     [TestCase(39, 20)] // left, 21
     [TestCase(39, 19)] // 22:30
-    public void GetNeighoursCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
+    public void NeighoursCountTest_ShouldReturnOne_WhenOneNeighbourAlive(int neighbourX, int neighbourY)
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
@@ -66,8 +79,11 @@ namespace GameOfLife_KSICS.Models.Tests
       Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// Should count 2 alive neighbours. 
+    /// </summary>
     [Test()]
-    public void GetNeighoursCountTest_ShouldReturnTwo_WhenTwoNeighboursAlive()
+    public void NeighoursCountTest_ShouldReturnTwo_WhenTwoNeighboursAlive()
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
@@ -81,8 +97,11 @@ namespace GameOfLife_KSICS.Models.Tests
       Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// Should count 3 alive neighbours. 
+    /// </summary>
     [Test()]
-    public void GetNeighoursCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
+    public void NeighoursCountTest_ShouldReturnThree_WhenThreeNeighboursAlive()
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
@@ -97,8 +116,11 @@ namespace GameOfLife_KSICS.Models.Tests
       Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// Should count 4 alive neighbours. 
+    /// </summary>
     [Test()]
-    public void GetNeighoursCountTest_ShouldReturnFour_WhenFourNeighboursAlive()
+    public void NeighoursCountTest_ShouldReturnFour_WhenFourNeighboursAlive()
     {
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
@@ -114,8 +136,11 @@ namespace GameOfLife_KSICS.Models.Tests
       Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// Should not throw exception when counting neighbours from an edge position.
+    /// </summary>
     [Test()]
-    public void GetNeighoursCountTest_ShouldNotThrowException_WhenNeighbourIsOutOfBounds()
+    public void NeighoursCountTest_ShouldNotThrowException_WhenGettingNeighboursCountFromEdgePosition()
     {
       var edgePositions = new List<(int x, int y)>()
       {
@@ -127,33 +152,65 @@ namespace GameOfLife_KSICS.Models.Tests
 
       try
       {
-        foreach (var position in edgePositions)
+        foreach (var (x, y) in edgePositions)
         {
-          var x = position.x;
-          var y = position.y;
-          field.NeighboursCount(x, y);
+          Assert.AreEqual(0, field.NeighboursCount(x, y), "Did not return 0, is the field not empty?");
         }
       }
       catch (Exception e)
       {
-        Assert.Fail($"Neighbour out of bounds? {e} was thrown.");
+        Assert.Fail(e.Message);
       }
     }
 
-    // TODO: make it check other side of array neighbours
-    //[Test()]
-    //[TestCase(-1, -1)]
-    //[TestCase(0, 41)]
-    //[TestCase(fieldWidth, 41)]
-    //[TestCase(fieldWidth, 0)]
-    //public void GetNeighourCountTest_ShouldReturnZero_WhenNeighboursAreOutOfBounds(int x, int y)
-    //{
-    //  var expected = 0;
-    //  var actual = field.GetNeighboursCount(x, y);
+    /// <summary>
+    /// Should count neighbour on other side from an edge position on the x-axis.
+    /// </summary>
+    /// <param name="x">Horizontal position on the field.</param>
+    [Test()]
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(79)]
+    public void NeighourCountTest_ShouldReturnOne_WhenOneNeighbourAliveOnOtherSideInXAxis(int x)
+    {
+      var y = 0;
 
-    //  Assert.AreEqual(expected, actual);
-    //}
+      // Set neighbour alive on other side in the x-axis
+      (int x, int y) neighbourPos = (x, field.Height - 1);
+      field.Cells[neighbourPos.x, neighbourPos.y].Alive = true;
 
+      var expected = 1;
+      var actual = field.NeighboursCount(x, y);
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    /// <summary>
+    /// Should count neighbour on other side from an edge position on the y-axis.
+    /// </summary>
+    /// <param name="y">Vertical position on the field.</param>
+    [Test()]
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(39)]
+    public void NeighourCountTest_ShouldReturnOne_WhenOneNeighbourAliveOnOtherSideInYAxis(int y)
+    {
+      var x = 0;
+      // Set neighbour alive on other side in the y-axis
+      (int x, int y) neighbourPos = (field.Width - 1, y);
+      field.Cells[neighbourPos.x, neighbourPos.y].Alive = true;
+
+      var expected = 1;
+      var actual = field.NeighboursCount(x, y);
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    /// <summary>
+    /// Should get a living cell for a position with a dead cell that has 3 living neighbouring cells.
+    /// </summary>
     [Test()]
     public void NextCellTest_ShouldBringAlive_WhenThreeNeighboursAndDeadInCurrentGen()
     {
@@ -163,9 +220,12 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.Cells[x, y].Alive = false;
 
-      Assert.IsTrue(field.NextCell(x, y, 3).Alive, "Should be alive.");
+      Assert.IsTrue(field.NextCell(x, y, 3).Alive, "Cell is not alive.");
     }
 
+    /// <summary>
+    /// Should get a living cell for a position with a living cell that has 2 living neighbouring cells.
+    /// </summary>
     [Test()]
     public void NextCellTest_ShouldKeepAlive_WhenTwoNeighboursAndAliveInCurrentGen()
     {
@@ -175,9 +235,12 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.Cells[x, y].Alive = true;
 
-      Assert.IsTrue(field.NextCell(x, y, 2).Alive, "Should be alive.");
+      Assert.IsTrue(field.NextCell(x, y, 2).Alive, "Cell is not alive.");
     }
 
+    /// <summary>
+    /// Should get a dead cell for a position with a dead cell that has 2 living neighbouring cells.
+    /// </summary>
     [Test()]
     public void NextCellTest_ShouldNotBringAlive_WhenTwoNeighboursAndDeadInCurrentGen()
     {
@@ -187,9 +250,13 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.Cells[x, y].Alive = false;
 
-      Assert.IsFalse(field.NextCell(x, y, 2).Alive, "Should not be alive.");
+      Assert.IsFalse(field.NextCell(x, y, 2).Alive, "Cell is alive.");
     }
 
+    /// <summary>
+    /// Should get a dead cell for a position that has less than 2 living neighbouring cells.
+    /// </summary>
+    /// <param name="neighboursCount">Living neighbouring cells count.</param>
     [Test()]
     [TestCase(int.MinValue)]
     [TestCase(-1)]
@@ -201,9 +268,13 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive);
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive, "Cell is alive.");
     }
 
+    /// <summary>
+    /// Should get a dead cell for a position that has more than 3 living neighbouring cells.
+    /// </summary>
+    /// <param name="neighboursCount">Living neighbouring cells count.</param>
     [Test()]
     [TestCase(4)]
     [TestCase(5)]
@@ -216,7 +287,7 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.NextCell(x, y, neighboursCount);
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive);
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive, "Cell is alive.");
     }
   }
 }

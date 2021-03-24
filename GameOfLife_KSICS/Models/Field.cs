@@ -74,6 +74,8 @@
 
     public Cell NextCell(int x, int y, int neighboursCount)
     {
+      // TODO: get the neighbourscount from here, dont need to send it as parameter...?
+
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();
       
