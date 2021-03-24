@@ -9,6 +9,8 @@
   {
     static void Main()
     {
+
+
       //GameOfLifeFromDefinedField();
       GameOfLifeFromRandomizedField();
     }

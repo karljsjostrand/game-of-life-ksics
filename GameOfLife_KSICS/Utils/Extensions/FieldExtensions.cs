@@ -21,5 +21,13 @@
           ].Alive = true;
       }
     }
+
+    // TODO
+    public static void AddCellsFromText(this IField field, string text)
+    {
+      // TODO
+
+      text = "";
+    }
   }
 }

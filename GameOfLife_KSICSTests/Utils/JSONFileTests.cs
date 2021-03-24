@@ -30,7 +30,7 @@ namespace GameOfLife_KSICS.Utils.Tests
       var fileName = "testFieldState";
 
       var jSONFile = new JSONFile<Field> { FileName = fileName, Data = field };
-      var fullPath = jSONFile.FilePath + fileName + jSONFile.FileExtension;
+      var fullPath = jSONFile.DirPath + fileName + jSONFile.FileExtension;
 
       FileAssert.DoesNotExist(fullPath);
 
@@ -51,7 +51,7 @@ namespace GameOfLife_KSICS.Utils.Tests
       var fileName = "testFieldState";
 
       var jSONSaveFileExpected = new JSONFile<Field> { FileName = fileName, Data = field };
-      var fullPath = jSONSaveFileExpected.FilePath + fileName + jSONSaveFileExpected.FileExtension;
+      var fullPath = jSONSaveFileExpected.DirPath + fileName + jSONSaveFileExpected.FileExtension;
 
       jSONSaveFileExpected.Save();
 

@@ -17,9 +17,9 @@
     public T Data { get; set; } = default;
 
     /// <summary>
-    /// Path to folder where saved states are stored.
+    /// Path to directory where saved states are stored.
     /// </summary>
-    public string FilePath { get; set; }
+    public string DirPath { get; set; }
       = Path.Combine(
           Path.Combine(
             Environment.GetFolderPath(
@@ -27,9 +27,9 @@
             "GOL_KSICS\\"));
 
     /// <summary>
-    /// Name of file and filename extension.
+    /// Name of file, file extension excluded.
     /// </summary>
-    public string FileName { get; set; } 
+    public string FileName { get; set; }
       = $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day} {DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
 
     /// <summary>
@@ -37,50 +37,79 @@
     /// </summary>
     public string FileExtension { get; } = ".json";
 
+    private string FullPath => DirPath + FileName + FileExtension;
+
     /// <summary>
     /// Save state of an object to a file at the specified path. 
     /// </summary>
-    public void Save()
+    /// <returns>true if saved successfully; otherwise  false</returns>
+    public bool Save()
     {
-      File.WriteAllText(
-      FilePath + FileName + FileExtension,
-      JsonConvert.SerializeObject(Data, Formatting.Indented,
-      new JsonSerializerSettings
+      try
       {
-        Formatting = Formatting.Indented,
-        NullValueHandling = NullValueHandling.Ignore,
-        DefaultValueHandling = DefaultValueHandling.Ignore,
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-      })
-      );
+        Directory.CreateDirectory(DirPath);
+
+        File.WriteAllText(
+          FullPath,
+          JsonConvert.SerializeObject(
+            Data, 
+            Formatting.Indented,
+            new JsonSerializerSettings
+            {
+              Formatting = Formatting.Indented,
+              NullValueHandling = NullValueHandling.Ignore,
+              DefaultValueHandling = DefaultValueHandling.Ignore,
+              ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            })
+          );
+      }
+      catch (Exception e)
+      {
+        Debug.WriteLine(e.Message);
+        return false;
+      }
+
+      return true;
     }
 
     /// <summary>
     /// Load state of an object from specified path.
     /// </summary>
-    public void Load()
+    /// <returns>true if loaded successfully; otherwise  false</returns>
+    public bool Load()
     {
       string data = string.Empty;
-      if (File.Exists(FilePath + FileName + FileExtension))
+      if (File.Exists(FullPath))
       {
         try
         {
-          data = File.ReadAllText(FilePath + FileName + FileExtension);
+          data = File.ReadAllText(FullPath);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-          Debug.WriteLine(ex.Message);
-          data = "{}";
+          Debug.WriteLine(e.Message);
+          return false;
         }
       }
+      else
+      {
+        // File not found.
+        return false;
+      }
+
       try
       {
         Data = JsonConvert.DeserializeObject<T>(data);
       }
-      catch (Exception ex)
+      catch (Exception e)
       {
-        Debug.WriteLine(ex.Message);
+        // Could not deserialize.
+        Debug.WriteLine(e.Message);
+        return false;
       }
+
+      // File loaded successfully.
+      return true;
     }
   }
 }

@@ -39,7 +39,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var y = centeredCellPosition.y;
 
       var expected = 0;
-      var actual = field.GetNeighboursCount(x, y);
+      var actual = field.NeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -61,7 +61,7 @@ namespace GameOfLife_KSICS.Models.Tests
       field.Cells[neighbourX, neighbourY].Alive = true;
 
       var expected = 1;
-      var actual = field.GetNeighboursCount(x, y);
+      var actual = field.NeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -76,7 +76,7 @@ namespace GameOfLife_KSICS.Models.Tests
       field.Cells[x + 1, y].Alive = true; // 15
 
       var expected = 2;
-      var actual = field.GetNeighboursCount(x, y);
+      var actual = field.NeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -92,7 +92,7 @@ namespace GameOfLife_KSICS.Models.Tests
       field.Cells[x + 1, y + 1].Alive = true; // 16:30
 
       var expected = 3;
-      var actual = field.GetNeighboursCount(x, y);
+      var actual = field.NeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -109,7 +109,7 @@ namespace GameOfLife_KSICS.Models.Tests
       field.Cells[x, y + 1].Alive = true; // 18
 
       var expected = 4;
-      var actual = field.GetNeighboursCount(x, y);
+      var actual = field.NeighboursCount(x, y);
 
       Assert.AreEqual(expected, actual);
     }
@@ -131,7 +131,7 @@ namespace GameOfLife_KSICS.Models.Tests
         {
           var x = position.x;
           var y = position.y;
-          field.GetNeighboursCount(x, y);
+          field.NeighboursCount(x, y);
         }
       }
       catch (Exception e)

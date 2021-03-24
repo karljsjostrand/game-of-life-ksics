@@ -27,7 +27,7 @@
     /// </summary>
     /// <param name="minSize"></param>
     /// <param name="maxSize"></param>
-    public GameOfLife(int minSize = 20, int maxSize = 100)
+    public GameOfLife(int minSize = 3, int maxSize = 100)
     {
       var rnd = new Random();
 
@@ -94,13 +94,13 @@
     /// </summary>
     public void NextGeneration()
     {
-      Field.NextCells = Field.InitializeCells(Field.NextCells);
+      Field.NextCells = Field.InitializedCells();
 
       for (int y = 0; y < Field.Height; y++)
       {
         for (int x = 0; x < Field.Width; x++)
         {
-          var neighbourCount = Field.GetNeighboursCount(x, y);
+          var neighbourCount = Field.NeighboursCount(x, y);
           Field.NextCells[x, y] = Field.NextCell(x, y, neighbourCount);
         }
       }

@@ -15,18 +15,18 @@
     private static readonly string title = "Game of Life";
     private static readonly string saveFieldStateName = "SavedFieldState";
 
-    private static readonly Dictionary<string, string> InterfaceInstructions = new Dictionary<string, string>()
+    private static readonly Dictionary<string, string> UserInterface = new Dictionary<string, string>()
     {
-      { "F1", "new random" },
-      { "F2", "load pre-defined #1" },
-      { "F3", "load pre-defined #2" },
-      { "F5", "save state" },
-      { "F6", "print state" },
-      { "F9", "load saved state" },
-      { "Space", "pause" },
-      { "Right", "step to next gen" },
-      { "1-2", "hold to slow down" },
-      { "3-4", "hold to speed up" },
+      { "     F1/R", "new random" },
+      { "       F2", "load pre-defined #1" },
+      { "       F3", "load pre-defined #2" },
+      { "     F5/S", "save state" },
+      { "     F6/P", "print state" },
+      { "     F9/L", "load saved state" },
+      { "    Space", "pause/resume" },
+      { "Tab/Right", "step to next gen" },
+      { "      1-2", "hold to slow down" },
+      { "      3-4", "hold to speed up" },
     };
 
     private bool update = true;
@@ -58,10 +58,10 @@
     /// </summary>
     private static void WriteInterfaceInstructions()
     {
-      Console.WriteLine(" - Interface instructions -");
-      foreach (var instruction in InterfaceInstructions)
+      Console.WriteLine(" - User Interface Key Bindings -\n");
+      foreach (var instruction in UserInterface)
       {
-        Console.WriteLine($" {instruction.Key}:\t{instruction.Value}");
+        Console.WriteLine($" {instruction.Key}: {instruction.Value}");
       }
       Console.WriteLine();
     }
@@ -132,17 +132,24 @@
     private void LoadFromFile(string fileName)
     {
       var jsonFile = new JSONFile<Field> { FileName = fileName };
-      jsonFile.Load();
 
-      var field = jsonFile.Data;
-      gameOfLife = new GameOfLife(field);
+      // Try to load file.
+      if (jsonFile.Load())
+      {
+        var field = jsonFile.Data;
+        gameOfLife = new GameOfLife(field);
 
-      // Set new view
-      view.WindowSize = (WindowWidth, WindowHeight);
+        // Set new view
+        view.WindowSize = (WindowWidth, WindowHeight);
+        // Resize window
+        Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
-      Raylib.SetWindowSize(WindowWidth, WindowHeight);
-
-      Console.WriteLine($"Loaded saved state from {jsonFile.FilePath + jsonFile.FileName + jsonFile.FileExtension}.");
+        Console.WriteLine($"Loaded saved state from {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+      }
+      else
+      {
+        Console.WriteLine($"Could not load state from {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+      }
     }
 
     #region User input handling
@@ -164,9 +171,15 @@
       {
         // Create a field file and save it
         var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (gameOfLife.Field as Field) };
-        jsonFile.Save();
 
-        Console.WriteLine($"Saved state to {jsonFile.FilePath + jsonFile.FileName + jsonFile.FileExtension}.");
+        if (jsonFile.Save())
+        {
+          Console.WriteLine($"Saved state to {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+        }
+        else
+        {
+          Console.WriteLine($"Could not save state to {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+        }
       }
     }
 
@@ -182,8 +195,8 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F6) || Raylib.IsKeyPressed(KeyboardKey.KEY_P))
       {
-        Console.WriteLine(gameOfLife.Field.ToString());
-        Debug.WriteLine(gameOfLife.Field.ToString());
+        Console.Write(gameOfLife.Field.ToString());
+        Debug.Write(gameOfLife.Field.ToString());
       }
     }
 
@@ -191,6 +204,7 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
       {
+        // Toggle to opposite.
         update = !update;
 
         if (update) 
@@ -210,6 +224,7 @@
         view.WindowSize = (WindowWidth, WindowHeight);
 
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
+
         Console.WriteLine("New random.");
       }
     }

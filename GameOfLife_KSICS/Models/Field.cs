@@ -23,12 +23,12 @@
     {
       Width = width;
       Height = height;
-      Cells = InitializeCells(Cells);
+      Cells = InitializedCells();
     }
 
-    public Cell[,] InitializeCells(Cell[,] cells)
+    public Cell[,] InitializedCells()
     {
-      cells = new Cell[Width, Height];
+      var cells = new Cell[Width, Height];
 
       for (int y = 0; y < Height; y++)
       {
@@ -41,7 +41,7 @@
       return cells;
     }
 
-    public int GetNeighboursCount(int x, int y)
+    public int NeighboursCount(int x, int y)
     {
       var count = 0;
 

@@ -28,11 +28,10 @@
     public int Height { get; }
 
     /// <summary>
-    /// Initializes an array of cells with default property values.
+    /// Initializes a two-dimensional array of cells with default property values.
     /// </summary>
-    /// <param name="cells">Array to initialize.</param>
     /// <returns>Initialized array of cells.</returns>
-    public Cell[,] InitializeCells(Cell[,] cells);
+    public Cell[,] InitializedCells();
 
     /// <summary>
     /// Get a cells number of living neighbours. 
@@ -43,7 +42,7 @@
     /// Amount of neighbours alive next to this position, 
     /// vertically, horizontally, or diagonally, 0 to 8. 
     /// </returns>
-    public int GetNeighboursCount(int x, int y);
+    public int NeighboursCount(int x, int y);
 
     /// <summary>
     /// Get the next cell at this position based on current cells alive state

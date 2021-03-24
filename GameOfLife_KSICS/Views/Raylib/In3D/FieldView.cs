@@ -7,16 +7,16 @@
   using GameOfLife_KSICS.Interfaces;
   using Raylib_cs;
 
-  // TODO: Camera and window size is bad.
+  // TODO: Camera and window size, and cell shapes bad. 
   class FieldView : IView
   {
     private static Color backgroundColor = Color.BLACK;
     private static Color colorWhenAlive = Color.DARKGRAY;
     private static Color colorWhenDead = Color.BLACK;
     private static Color colorWhenYoung = Color.GRAY;
-    private static Color colorWhenAdult = Color.LIGHTGRAY;
-    private static Color colorWhenOld = Color.WHITE;
-    private static Color colorWhenOlder = Color.GOLD;
+    private static Color colorWhenLessYoung = Color.LIGHTGRAY;
+    private static Color colorWhenLessOld = Color.WHITE;
+    private static Color colorWhenOld = Color.GOLD;
 
     public (int Width, int Height) WindowSize { get; set; }
 
@@ -56,6 +56,7 @@
       //camera.position.X = (float) Math.Sin(time) * .05f;
       //camera.position.Z = (float) Math.Cos(time) * .05f; // ?????????????????????????
 
+      // testing
       if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
       {
         camera.position.Z = 100.0f;
@@ -86,9 +87,9 @@
               color = field.Cells[x, y].Age switch
               {
                 1 => colorWhenYoung,
-                2 => colorWhenAdult,
-                3 => colorWhenOld,
-                _ => colorWhenOlder,
+                2 => colorWhenLessYoung,
+                3 => colorWhenLessOld,
+                _ => colorWhenOld,
               };
             }
 
