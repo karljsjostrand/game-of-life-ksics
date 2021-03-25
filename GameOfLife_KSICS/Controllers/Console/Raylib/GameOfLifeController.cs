@@ -37,7 +37,7 @@
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
-    private int CellsToWindowSizeRatio = 12; // TODO: Window size width incorrect at 7 and lower with a 15x35 field.
+    private int CellsToWindowSizeRatio = 12; // TODO: Window size width incorrect when <= 7, with a 15x35 field, and when <= 12 with 9x24
 
     private GameOfLife GameOfLife { get; set; }
     private IView View { get; set; }
@@ -81,7 +81,7 @@
     /// </summary>
     private static void WriteInterfaceInstructions()
     {
-      Console.WriteLine(" - User Interface Key Bindings -\n");
+      Console.WriteLine(" - Game of Life User Interface -\n");
       foreach (var (input, description) in userInterface)
       {
         Console.WriteLine($" {input}: {description}");
@@ -115,6 +115,8 @@
       }
       Raylib.CloseWindow();
     }
+
+    #region User input handling
 
     /// <summary>
     /// Check for any valid input made by the user.
@@ -155,7 +157,7 @@
     /// </param>
     private void LoadFromFile(string fileName)
     {
-      var jsonFile = new JSONFile<Field> { FileName = fileName };
+      var jsonFile = new JSONFile<IField> { FileName = fileName };
 
       // Try to load file.
       if (jsonFile.Load())
@@ -168,11 +170,13 @@
         // Resize window.
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
-        Console.WriteLine($"Loaded saved state from {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+        Console.WriteLine(
+          $"Loaded saved state from {jsonFile.FullPath}.");
       }
       else
       {
-        Console.WriteLine($"Could not load state from {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+        Console.WriteLine(
+          $"Could not load state from {jsonFile.FullPath}.");
       }
     }
 
@@ -195,7 +199,9 @@
         // Resize window
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
-        Console.WriteLine($"Loaded predefined state #{id}. Description: {predefined.description}");
+        Console.WriteLine(
+          $"Loaded predefined state #{id}. " +
+          $"Description: {predefined.description}");
       }
       else
       {
@@ -203,7 +209,6 @@
       }
     }
 
-    #region User input handling
     private void HandleUserSteppingToNextGen()
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_RIGHT) || Raylib.IsKeyPressed(KeyboardKey.KEY_TAB))
@@ -220,16 +225,24 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
       {
-        // Create a field file and save it
-        var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (GameOfLife.Field as Field) };
+        var type = GameOfLife.Field.GetType();
+
+        // Create a field file and save it.
+        var jsonFile = new JSONFile<IField>
+        {
+          FileName = saveFieldStateName,
+          Data = GameOfLife.Field
+        };
 
         if (jsonFile.Save())
         {
-          Console.WriteLine($"Saved state to {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+          Console.WriteLine(
+            $"Saved state to {jsonFile.FullPath}.");
         }
         else
         {
-          Console.WriteLine($"Could not save state to {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
+          Console.WriteLine(
+            $"Could not save state to {jsonFile.FullPath}.");
         }
       }
     }
@@ -353,6 +366,7 @@
         }
       }
     }
+
     #endregion
   }
 }

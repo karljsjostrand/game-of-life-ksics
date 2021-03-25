@@ -37,7 +37,10 @@
     /// </summary>
     public string FileExtension { get; } = ".json";
 
-    private string FullPath => DirPath + FileName + FileExtension;
+    /// <summary>
+    /// DirPath + FileName + FileExtension
+    /// </summary>
+    public string FullPath => DirPath + FileName + FileExtension;
 
     /// <summary>
     /// Save state of an object to a file at the specified path. 

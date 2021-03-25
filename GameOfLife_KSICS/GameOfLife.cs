@@ -27,7 +27,7 @@
     /// </summary>
     /// <param name="minSize">Minimum randomized width and height of field.</param>
     /// <param name="maxSize">Maximum randomized width and height of field.</param>
-    public GameOfLife(int minSize = 4, int maxSize = 100)
+    public GameOfLife(int minSize = 9, int maxSize = 100)
     {
       var rnd = new Random();
       
