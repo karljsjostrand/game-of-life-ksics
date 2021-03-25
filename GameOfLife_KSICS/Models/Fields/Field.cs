@@ -46,7 +46,7 @@
       var count = 0;
 
       // Check the 8 surrounding cells alive states.
-      // Clockwise, starting at 12
+      // Clockwise, starting at 12.
       if (IsAlive(x, y - 1)) count++; // 12
       if (IsAlive(x + 1, y - 1)) count++; // 13:30
       if (IsAlive(x + 1, y)) count++; // 15
@@ -74,7 +74,7 @@
 
     public Cell NextCell(int x, int y, int neighboursCount)
     {
-      // TODO: get the neighbourscount from here, dont need to send it as parameter...?
+      // TODO: get the neighbours count from here, why call it before and send as parameter?
 
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();
@@ -83,7 +83,7 @@
       if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
       {
         nextCell.Alive = true;
-        nextCell.Age = Cells[x, y].Age + 1;
+        nextCell.Age = Cells[x, y].Age + 1; // TODO: what about age going past int.MaxValue?
       }
       // Bring alive
       else if (neighboursCount == 3 && !Cells[x, y].Alive)

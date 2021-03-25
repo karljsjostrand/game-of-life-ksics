@@ -7,7 +7,7 @@
   using GameOfLife_KSICS.Interfaces;
   using Raylib_cs;
 
-  // TODO: Camera and window size, and cell shapes bad. 
+  // TODO: Camera and window size, and cell shapes. 
   class FieldView : IView
   {
     private static Color backgroundColor = Color.BLACK;
@@ -46,23 +46,6 @@
 
       Raylib.BeginDrawing();
       Raylib.ClearBackground(backgroundColor);
-
-      // TODO: camera bad
-      // Move camera
-      //var time = DateTime.Now.Millisecond;
-      //var cameraTime = (double) (time) * 0.3;
-      ////camera.position.X = (float) Math.Cos(cameraTime) * 40.0f;
-      ////camera.position.Z = (float) Math.Sin(cameraTime) * 40.0f;
-      //camera.position.X = (float) Math.Sin(time) * .05f;
-      //camera.position.Z = (float) Math.Cos(time) * .05f; // ?????????????????????????
-
-      // testing
-      if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
-      {
-        camera.position.Z = 100.0f;
-        camera.position.X = 100.0f;
-        camera.position.Y = 100.0f;
-      }
 
       Raylib.BeginMode3D(camera);
 

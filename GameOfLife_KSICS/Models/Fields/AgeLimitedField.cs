@@ -10,7 +10,7 @@
     /// <summary>
     /// A cells age limit.
     /// </summary>
-    public static int AgeLimit { get; } = 100;
+    public int AgeLimit { get; } = 100;
 
     /// <summary>
     /// Create an OldAgeField with the given width and height. It's rules 

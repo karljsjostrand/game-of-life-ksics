@@ -6,6 +6,7 @@
   using GameOfLife_KSICS.Interfaces;
   using GameOfLife_KSICS.Models;
   using GameOfLife_KSICS.Utils;
+  using GameOfLife_KSICS.Utils.FieldStates;
   using Raylib_cs;
 
   class GameOfLifeController
@@ -15,28 +16,34 @@
     private static readonly string title = "Game of Life";
     private static readonly string saveFieldStateName = "SavedFieldState";
 
-    private static readonly Dictionary<string, string> UserInterface = new Dictionary<string, string>()
+    private static readonly List<(string input, string description)> userInterface = new List<(string, string)>()
     {
-      { "     F1/R", "new random" },
-      { "       F2", "load pre-defined #1" },
-      { "       F3", "load pre-defined #2" },
-      { "     F5/S", "save state" },
-      { "     F6/P", "print state" },
-      { "     F9/L", "load saved state" },
-      { "    Space", "pause/resume" },
-      { "Tab/Right", "step to next gen" },
-      { "      1-2", "hold to slow down" },
-      { "      3-4", "hold to speed up" },
+      { ("     F1/R", "new random") },
+      { ("    F2-F4", "load pre-defined") },
+      { ("     F5/S", "save state") },
+      { ("     F6/P", "print state") },
+      { ("     F9/L", "load saved state") },
+      { ("    Space", "pause/resume") },
+      { ("Tab/Right", "step to next gen") },
+      { ("      1-2", "hold to slow down") },
+      { ("      3-4", "hold to speed up") },
+    };
+
+    private readonly Dictionary<int, (IField field, string description)> predefinedFieldStates = new Dictionary<int, (IField, string)>()
+    {
+      { 1, FieldStates.GliderCrashesIntoBeacon() },
+      { 2, FieldStates.RandomizedChanceField() },
+      { 3, FieldStates.AgeLimitedField() },
     };
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
 
-    private GameOfLife gameOfLife;
-    private IView view;
+    private GameOfLife GameOfLife { get; set; }
+    private IView View { get; set; }
 
-    private int WindowWidth => gameOfLife.Field.Width * cellSizeInPixels;
-    private int WindowHeight => gameOfLife.Field.Height * cellSizeInPixels;
+    private int WindowWidth => GameOfLife.Field.Width * cellSizeInPixels;
+    private int WindowHeight => GameOfLife.Field.Height * cellSizeInPixels;
     
     /// <summary>
     /// Create a user interface and a view for a Game of Life.
@@ -45,10 +52,10 @@
     public GameOfLifeController(GameOfLife gameOfLife)
     {
       // Set API/Models
-      this.gameOfLife = gameOfLife;
+      GameOfLife = gameOfLife;
 
       // Set view
-      view = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
+      View = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
 
       Start();
     }
@@ -59,9 +66,9 @@
     private static void WriteInterfaceInstructions()
     {
       Console.WriteLine(" - User Interface Key Bindings -\n");
-      foreach (var instruction in UserInterface)
+      foreach (var (input, description) in userInterface)
       {
-        Console.WriteLine($" {instruction.Key}: {instruction.Value}");
+        Console.WriteLine($" {input}: {description}");
       }
       Console.WriteLine();
     }
@@ -80,13 +87,13 @@
       while (!Raylib.WindowShouldClose())
       {
         // View
-        view.Draw(gameOfLife.Field);
+        View.Draw(GameOfLife.Field);
 
         // User input
         HandleUserInput();
 
         // Update
-        if (update) gameOfLife.NextGeneration();
+        if (update) GameOfLife.NextGeneration();
       }
       Raylib.CloseWindow();
     }
@@ -106,8 +113,7 @@
       HandleUserSetsNewRandom();
 
       // Pre-defined
-      HandleUserLoadsPreDefined1();
-      HandleUserLoadsPreDefined2();
+      HandleUserLoadsPreDefined();
 
       // Saves
       HandleUserSavesState();
@@ -137,10 +143,10 @@
       if (jsonFile.Load())
       {
         var field = jsonFile.Data;
-        gameOfLife = new GameOfLife(field);
+        GameOfLife = new GameOfLife(field);
 
         // Set new view
-        view.WindowSize = (WindowWidth, WindowHeight);
+        View.WindowSize = (WindowWidth, WindowHeight);
         // Resize window
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
@@ -152,6 +158,32 @@
       }
     }
 
+    /// <summary>
+    /// Create a new game of life from a predefined state, set
+    /// new view, and resize the window.
+    /// </summary>
+    /// <param name="id">Id for the predefined.</param>
+    private void LoadPredefined(int id)
+    {
+      var predefined = predefinedFieldStates.GetValueOrDefault(id);
+
+      if (predefined != default)
+      {
+        GameOfLife = new GameOfLife(predefined.field);
+
+        // Set new view
+        View.WindowSize = (WindowWidth, WindowHeight);
+        // Resize window
+        Raylib.SetWindowSize(WindowWidth, WindowHeight);
+
+        Console.WriteLine($"Loaded predefined state #{id}. Description: {predefined.description}");
+      }
+      else
+      {
+        Console.WriteLine($"Could not find a predefined state #{id}.");
+      }
+    }
+
     #region User input handling
     private void HandleUserSteppingToNextGen()
     {
@@ -159,9 +191,9 @@
       {
         update = false;
 
-        gameOfLife.NextGeneration();
+        GameOfLife.NextGeneration();
 
-        Console.WriteLine($"Stepped to generation {gameOfLife.GenerationsCount}.");
+        Console.WriteLine($"Stepped to generation {GameOfLife.GenerationsCount}.");
       }
     }
 
@@ -170,7 +202,7 @@
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
       {
         // Create a field file and save it
-        var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (gameOfLife.Field as Field) };
+        var jsonFile = new JSONFile<Field> { FileName = saveFieldStateName, Data = (GameOfLife.Field as Field) };
 
         if (jsonFile.Save())
         {
@@ -195,8 +227,8 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F6) || Raylib.IsKeyPressed(KeyboardKey.KEY_P))
       {
-        Console.Write(gameOfLife.Field.ToString());
-        Debug.Write(gameOfLife.Field.ToString());
+        Console.Write(GameOfLife.Field.ToString());
+        Debug.Write(GameOfLife.Field.ToString());
       }
     }
 
@@ -218,10 +250,10 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F1) || Raylib.IsKeyPressed(KeyboardKey.KEY_R))
       {
-        gameOfLife = new GameOfLife();
+        GameOfLife = new GameOfLife();
 
         // Set new view
-        view.WindowSize = (WindowWidth, WindowHeight);
+        View.WindowSize = (WindowWidth, WindowHeight);
 
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
@@ -229,19 +261,19 @@
       }
     }
 
-    private void HandleUserLoadsPreDefined1()
+    private void HandleUserLoadsPreDefined()
     {
-      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F2))
+      switch ((KeyboardKey) Raylib.GetKeyPressed())
       {
-        LoadFromFile("PreDefinedState1");
-      }
-    }
-
-    private void HandleUserLoadsPreDefined2()
-    {
-      if (Raylib.IsKeyPressed(KeyboardKey.KEY_F3))
-      {
-        LoadFromFile("PreDefinedState2");
+        case KeyboardKey.KEY_F2:
+          LoadPredefined(1);
+          break;
+        case KeyboardKey.KEY_F3:
+          LoadPredefined(2);
+          break;
+        case KeyboardKey.KEY_F4:
+          LoadPredefined(3);
+          break;
       }
     }
 

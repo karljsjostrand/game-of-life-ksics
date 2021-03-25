@@ -13,7 +13,7 @@
     private static Color colorWhenAlive = Color.DARKGRAY;
     private static Color colorWhenDead = Color.BLACK;
     private static Color colorWhenYoung = Color.GRAY;
-    private static Color colorWhenAdult = Color.LIGHTGRAY;
+    private static Color colorWhenLessYoung = Color.LIGHTGRAY;
     private static Color colorWhenOld = Color.WHITE;
     private static Color colorWhenOlder = Color.GOLD;
 
@@ -53,7 +53,7 @@
             color = field.Cells[x, y].Age switch
             {
               1 => colorWhenYoung,
-              2 => colorWhenAdult,
+              2 => colorWhenLessYoung,
               3 => colorWhenOld,
               _ => colorWhenOlder,
             };
