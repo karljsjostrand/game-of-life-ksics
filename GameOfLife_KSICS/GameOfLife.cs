@@ -25,8 +25,8 @@
     /// cells, with a 50/50 chance for each cell in the field to be 
     /// initialized alive. 
     /// </summary>
-    /// <param name="minSize"></param>
-    /// <param name="maxSize"></param>
+    /// <param name="minSize">Minimum randomized width and height of field.</param>
+    /// <param name="maxSize">Maximum randomized width and height of field.</param>
     public GameOfLife(int minSize = 3, int maxSize = 100)
     {
       var rnd = new Random();
@@ -45,14 +45,14 @@
     }
 
     /// <summary>
-    /// Create an instance with a field of given width and height and 
-    /// randomized cells, with the given chance for each cell in the 
+    /// Create a Game of Life with a field of given width and height and 
+    /// randomized cells, with the specified chance for each cell in the 
     /// field to be initialized alive.
     /// </summary>
     /// <param name="width">Width of it's field in number of cells.</param>
     /// <param name="height">Height of it's field in number of cells.</param>
     /// <param name="chance">
-    /// Chance for each in the field to be alive initially.
+    /// Chance for each cell in the field to be alive initially.
     /// </param>
     public GameOfLife(int width, int height, double chance)
     {
@@ -62,7 +62,7 @@
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = rnd.NextDouble() >= chance;
+        cell.Alive = rnd.NextDouble() <= chance;
       }
 
       Field = field;
@@ -83,10 +83,13 @@
     /// <param name="fileName">File name, file extension excluded.</param>
     public GameOfLife(string fileName)
     {
-      var jsonFile = new JSONFile<Field> { FileName = fileName };
-      jsonFile.Load();
+      var jsonFile = new JSONFile<Field> { FileName = fileName};
+      if (jsonFile.Load())
+      {
+        Field = jsonFile.Data;
+      }
 
-      Field = jsonFile.Data;
+      
     }
 
     /// <summary>
