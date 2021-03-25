@@ -10,6 +10,10 @@
 
   class FieldStates
   {
+    /// <summary>
+    /// Creates a field with a beacon and a glider formation on collision course.
+    /// </summary>
+    /// <returns>Field and description.</returns>
     public static (IField Field, string Description) GliderCrashesIntoBeacon()
     {
       var field = new Field(48, 12);
@@ -20,20 +24,28 @@
       return (field, "Glider crashes into beacon.");
     }
 
+    /// <summary>
+    /// Creates a randomized field with a chance for new life in cells with old enough neighbours.
+    /// </summary>
+    /// <returns>Field and description.</returns>
     public static (IField Field, string Description) RandomizedChanceField()
     {
-      var field = new ChanceField(48, 48);
+      var field = new LifeUhFindsAWayField(48, 48);
 
       var rnd = new Random();
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = rnd.NextDouble() >= .5;
+        cell.IsAlive = rnd.NextDouble() >= .5;
       }
 
-      return (field, "Randomzied field with a chance for new life with older neighbours.");
+      return (field, $"Randomized field with a chance for new life at a high enough total age ({field.HighTotalAge}) of neighbouring cells.");
     }
 
+    /// <summary>
+    /// Creates a field with a glider, a twins, and a beacon formation in a field where age limits a cells life span.
+    /// </summary>
+    /// <returns>Field and description.</returns>
     public static (IField Field, string Description) AgeLimitedField()
     {
       var field = new AgeLimitedField(48, 48);

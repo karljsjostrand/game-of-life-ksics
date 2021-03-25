@@ -42,8 +42,8 @@
       {
         for (int x = 0; x < field.Width; x++)
         {
-          // For a performance increase don't draw dead cells.
-          if (!field.Cells[x, y].Alive) continue;
+          // Don't draw dead cell.
+          if (!field.Cells[x, y].IsAlive) continue;
 
           var posX = x * (cellWidth + borderThickness);
           var posY = y * (cellheight + borderThickness);
@@ -62,7 +62,7 @@
           Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
         }
       }
-      Raylib.DrawFPS(1, 1);
+
       Raylib.EndDrawing();
     }
   }

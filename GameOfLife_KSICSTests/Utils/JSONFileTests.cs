@@ -33,7 +33,7 @@ namespace GameOfLife_KSICS.Utils.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[x, y].Alive = true;
+      field.Cells[x, y].IsAlive = true;
       var fileName = "testFieldState";
 
       var jSONFile = new JSONFile<Field> { FileName = fileName, Data = field };
@@ -59,7 +59,7 @@ namespace GameOfLife_KSICS.Utils.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[x, y].Alive = true;
+      field.Cells[x, y].IsAlive = true;
       var fileName = "testFieldState";
 
       var jSONSaveFileExpected = new JSONFile<Field> { FileName = fileName, Data = field };

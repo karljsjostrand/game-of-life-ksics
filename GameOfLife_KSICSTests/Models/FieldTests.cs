@@ -71,7 +71,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[neighbourX, neighbourY].Alive = true;
+      field.Cells[neighbourX, neighbourY].IsAlive = true;
 
       var expected = 1;
       var actual = field.NeighboursCount(x, y);
@@ -88,8 +88,8 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[x + 1, y - 1].Alive = true; // 13:30
-      field.Cells[x + 1, y].Alive = true; // 15
+      field.Cells[x + 1, y - 1].IsAlive = true; // 13:30
+      field.Cells[x + 1, y].IsAlive = true; // 15
 
       var expected = 2;
       var actual = field.NeighboursCount(x, y);
@@ -106,9 +106,9 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[x + 1, y - 1].Alive = true; // 13:30
-      field.Cells[x + 1, y    ].Alive = true; // 15
-      field.Cells[x + 1, y + 1].Alive = true; // 16:30
+      field.Cells[x + 1, y - 1].IsAlive = true; // 13:30
+      field.Cells[x + 1, y    ].IsAlive = true; // 15
+      field.Cells[x + 1, y + 1].IsAlive = true; // 16:30
 
       var expected = 3;
       var actual = field.NeighboursCount(x, y);
@@ -125,10 +125,10 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = centeredCellPosition.x;
       var y = centeredCellPosition.y;
 
-      field.Cells[x + 1, y - 1].Alive = true; // 13:30
-      field.Cells[x + 1, y].Alive = true; // 15
-      field.Cells[x + 1, y + 1].Alive = true; // 16:30
-      field.Cells[x, y + 1].Alive = true; // 18
+      field.Cells[x + 1, y - 1].IsAlive = true; // 13:30
+      field.Cells[x + 1, y].IsAlive = true; // 15
+      field.Cells[x + 1, y + 1].IsAlive = true; // 16:30
+      field.Cells[x, y + 1].IsAlive = true; // 18
 
       var expected = 4;
       var actual = field.NeighboursCount(x, y);
@@ -178,7 +178,7 @@ namespace GameOfLife_KSICS.Models.Tests
 
       // Set neighbour alive on other side in the x-axis
       (int x, int y) neighbourPos = (x, field.Height - 1);
-      field.Cells[neighbourPos.x, neighbourPos.y].Alive = true;
+      field.Cells[neighbourPos.x, neighbourPos.y].IsAlive = true;
 
       var expected = 1;
       var actual = field.NeighboursCount(x, y);
@@ -200,7 +200,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = 0;
       // Set neighbour alive on other side in the y-axis
       (int x, int y) neighbourPos = (field.Width - 1, y);
-      field.Cells[neighbourPos.x, neighbourPos.y].Alive = true;
+      field.Cells[neighbourPos.x, neighbourPos.y].IsAlive = true;
 
       var expected = 1;
       var actual = field.NeighboursCount(x, y);
@@ -218,9 +218,9 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.Cells[x, y].Alive = false;
+      field.Cells[x, y].IsAlive = false;
 
-      Assert.IsTrue(field.NextCell(x, y, 3).Alive, "Cell is not alive.");
+      Assert.IsTrue(field.NextCell(x, y, 3).IsAlive, "Cell is not alive.");
     }
 
     /// <summary>
@@ -233,9 +233,9 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.Cells[x, y].Alive = true;
+      field.Cells[x, y].IsAlive = true;
 
-      Assert.IsTrue(field.NextCell(x, y, 2).Alive, "Cell is not alive.");
+      Assert.IsTrue(field.NextCell(x, y, 2).IsAlive, "Cell is not alive.");
     }
 
     /// <summary>
@@ -248,9 +248,9 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      field.Cells[x, y].Alive = false;
+      field.Cells[x, y].IsAlive = false;
 
-      Assert.IsFalse(field.NextCell(x, y, 2).Alive, "Cell is alive.");
+      Assert.IsFalse(field.NextCell(x, y, 2).IsAlive, "Cell is alive.");
     }
 
     /// <summary>
@@ -268,7 +268,7 @@ namespace GameOfLife_KSICS.Models.Tests
       var x = position.x;
       var y = position.y;
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive, "Cell is alive.");
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).IsAlive, "Cell is alive.");
     }
 
     /// <summary>
@@ -287,7 +287,7 @@ namespace GameOfLife_KSICS.Models.Tests
 
       field.NextCell(x, y, neighboursCount);
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).Alive, "Cell is alive.");
+      Assert.IsFalse(field.NextCell(x, y, neighboursCount).IsAlive, "Cell is alive.");
     }
   }
 }

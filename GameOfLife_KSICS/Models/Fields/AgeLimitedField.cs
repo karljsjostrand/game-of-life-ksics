@@ -10,7 +10,7 @@
     /// <summary>
     /// A cells age limit.
     /// </summary>
-    public int AgeLimit { get; } = 100;
+    public int AgeLimit { get; set; } = 100;
 
     /// <summary>
     /// Create an OldAgeField with the given width and height. It's rules 
@@ -39,21 +39,21 @@
       var nextCell = new Cell();
 
       // Stay alive.
-      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
+      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
         nextCell.Age = Cells[x, y].Age + 1;
       }
       // Bring alive.
-      else if (neighboursCount == 3 && !Cells[x, y].Alive)
+      else if (neighboursCount == 3 && !Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
       }
 
       // Age limit.
       if (Cells[x, y].Age > AgeLimit)
       {
-        nextCell.Alive = false;
+        nextCell.IsAlive = false;
       }
 
       return nextCell;

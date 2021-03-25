@@ -27,10 +27,10 @@
     /// </summary>
     /// <param name="minSize">Minimum randomized width and height of field.</param>
     /// <param name="maxSize">Maximum randomized width and height of field.</param>
-    public GameOfLife(int minSize = 3, int maxSize = 100)
+    public GameOfLife(int minSize = 4, int maxSize = 100)
     {
       var rnd = new Random();
-
+      
       var width = rnd.Next(minSize, maxSize);
       var height = rnd.Next(minSize, maxSize / 2);
 
@@ -38,7 +38,7 @@
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = rnd.NextDouble() >= .5;
+        cell.IsAlive = rnd.NextDouble() >= .5;
       }
 
       Field = field;
@@ -62,7 +62,7 @@
 
       foreach (var cell in field.Cells)
       {
-        cell.Alive = rnd.NextDouble() <= chance;
+        cell.IsAlive = rnd.NextDouble() <= chance;
       }
 
       Field = field;

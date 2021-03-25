@@ -9,10 +9,10 @@
   {
     static void Main()
     {
-      // Create a Game of Life where about a tenth of the cells are initially alive.
-      var gol = new GameOfLife(500, 200, .1);
+      // Create a 110 by 80 Game of Life where about a third of the cells are initially alive.
+      var gol = new GameOfLife(110, 80, .3);
 
-      // View and control the game
+      // Control and view the game
       var controller = new GameOfLifeController(gol);
     }
   }

@@ -37,7 +37,7 @@
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
-    private int CellsToWindowSizeRatio = 3;
+    private int CellsToWindowSizeRatio = 12; // TODO: Window size width incorrect at 7 and lower with a 15x35 field.
 
     private GameOfLife GameOfLife { get; set; }
     private IView View { get; set; }
@@ -51,12 +51,7 @@
     /// <param name="gameOfLife">Game of Life API.</param>
     public GameOfLifeController(GameOfLife gameOfLife)
     {
-      // Set API/Models
-      GameOfLife = gameOfLife;
-
-      // Set view
-      View = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
-
+      Setup(gameOfLife);
       Start();
     }
 
@@ -67,15 +62,18 @@
     /// <param name="pixelsPerCell">Width and height of a drawn cell in number of pixels.</param>
     public GameOfLifeController(GameOfLife gameOfLife, int pixelsPerCell)
     {
+      CellsToWindowSizeRatio = pixelsPerCell;
+      Setup(gameOfLife);
+      Start();
+    }
+
+    private void Setup(GameOfLife gameOfLife)
+    {
       // Set API/Models
       GameOfLife = gameOfLife;
 
-      CellsToWindowSizeRatio = pixelsPerCell;
-
       // Set view
       View = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
-
-      Start();
     }
 
     /// <summary>
@@ -99,6 +97,8 @@
     {
       WriteInterfaceInstructions();
 
+      // Initialize Raylib
+      Raylib.SetTraceLogLevel(TraceLogType.LOG_WARNING);
       Raylib.SetTargetFPS(targetFps);
       Raylib.InitWindow(WindowWidth, WindowHeight, title);
 
@@ -160,12 +160,12 @@
       // Try to load file.
       if (jsonFile.Load())
       {
-        var field = jsonFile.Data;
-        GameOfLife = new GameOfLife(field);
+        Setup(
+          new GameOfLife(
+            jsonFile.Data
+            ));
 
-        // Set new view
-        View.WindowSize = (WindowWidth, WindowHeight);
-        // Resize window
+        // Resize window.
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
         Console.WriteLine($"Loaded saved state from {jsonFile.DirPath + jsonFile.FileName + jsonFile.FileExtension}.");
@@ -187,10 +187,11 @@
 
       if (predefined != default)
       {
-        GameOfLife = new GameOfLife(predefined.field);
+        Setup(
+          new GameOfLife(
+            predefined.field
+            ));
 
-        // Set new view
-        View.WindowSize = (WindowWidth, WindowHeight);
         // Resize window
         Raylib.SetWindowSize(WindowWidth, WindowHeight);
 
@@ -254,7 +255,7 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
       {
-        // Toggle to opposite.
+        // Toggle update flag.
         update = !update;
 
         if (update) 

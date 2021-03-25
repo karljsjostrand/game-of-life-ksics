@@ -7,7 +7,7 @@
 
   public class Cell
   {
-    public bool Alive { get; set; } = false;
+    public bool IsAlive { get; set; } = false;
 
     /// <summary>
     /// Number of generations it's been alive.

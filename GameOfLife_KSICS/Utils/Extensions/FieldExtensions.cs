@@ -18,7 +18,7 @@
         field.Cells[
           (pos.x + cell.x + field.Width) % field.Width, 
           (pos.y + cell.y + field.Height) % field.Height
-          ].Alive = true;
+          ].IsAlive = true;
       }
     }
   }

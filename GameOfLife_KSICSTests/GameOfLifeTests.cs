@@ -37,17 +37,17 @@ namespace GameOfLife_KSICS.Tests
       var center = centeredCellPos;
 
       // Bring a row of 3 cells alive in the center of the field
-      gameOfLife.Field.Cells[center.x - 1, center.y].Alive = true;
-      gameOfLife.Field.Cells[center.x,     center.y].Alive = true;
-      gameOfLife.Field.Cells[center.x + 1, center.y].Alive = true;
+      gameOfLife.Field.Cells[center.x - 1, center.y].IsAlive = true;
+      gameOfLife.Field.Cells[center.x,     center.y].IsAlive = true;
+      gameOfLife.Field.Cells[center.x + 1, center.y].IsAlive = true;
 
       // Step to next generation
       gameOfLife.NextGeneration();
 
       // Assert alive cells being the center, above center, and below center
-      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y - 1].Alive, "Not alive above centered");
-      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y].Alive, "Not alive centered");
-      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y + 1].Alive, "Not alive below centered");
+      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y - 1].IsAlive, "Not alive above centered");
+      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y].IsAlive, "Not alive centered");
+      Assert.IsTrue(gameOfLife.Field.Cells[center.x, center.y + 1].IsAlive, "Not alive below centered");
     }
   }
 }

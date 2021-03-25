@@ -5,17 +5,23 @@
   using System.Collections.Generic;
   using System.Text;
 
-  public class ChanceField : Field, IField
+  /// <seealso cref="https://www.youtube.com/watch?v=dMjQ3hA9mEA"/>
+  public class LifeUhFindsAWayField : Field, IField
   {
     /// <summary>
-    /// Create a ChanceField with the given width and height. It's rules 
+    /// The total age required by neighbouring cells for an additional possibility of new life.
+    /// </summary>
+    public int HighTotalAge { get; set; } = 64;
+
+    /// <summary>
+    /// Create a field with the given width and height. It's rules 
     /// differs from the standard field in such way that a cell has a
     /// chance to become alive with only 2 neighbours if the total 
     /// age of neighbouring cells is high enough.
     /// </summary>
     /// <param name="width">Number of cells in width.</param>
     /// <param name="height">Number of cells in height.</param>
-    public ChanceField(int width, int height) : base(width, height) 
+    public LifeUhFindsAWayField(int width, int height) : base(width, height) 
     {
     }
 
@@ -63,20 +69,20 @@
       var chance = .01;
 
       // Stay alive.
-      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
+      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
         nextCell.Age = Cells[x, y].Age + 1;
       }
       // Bring alive when 3 neighbours.
-      else if (neighboursCount == 3 && !Cells[x, y].Alive)
+      else if (neighboursCount == 3 && !Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
       }
-      // 1% Chance to bring alive when 2 neighbours and total age is high.
-      else if (neighboursCount == 2 && !Cells[x, y].Alive && GetTotalAgeOfNeighbours(x, y) > totalHighAge)
+      // 1% chance to bring alive when 2 neighbours and total age is high.
+      else if (neighboursCount == 2 && !Cells[x, y].IsAlive && GetTotalAgeOfNeighbours(x, y) > totalHighAge)
       {
-        nextCell.Alive = rnd.NextDouble() <= chance;
+        nextCell.IsAlive = rnd.NextDouble() <= chance;
       }
 
       return nextCell;

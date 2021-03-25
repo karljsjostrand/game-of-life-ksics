@@ -69,7 +69,7 @@
     /// </returns>
     protected bool IsAlive(int x, int y)
     {
-      return Cells[(x + Width) % Width, (y + Height) % Height].Alive;
+      return Cells[(x + Width) % Width, (y + Height) % Height].IsAlive;
     }
 
     public Cell NextCell(int x, int y, int neighboursCount)
@@ -80,15 +80,15 @@
       var nextCell = new Cell();
       
       // Stay alive
-      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].Alive)
+      if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
         nextCell.Age = Cells[x, y].Age + 1; // TODO: what about age going past int.MaxValue?
       }
       // Bring alive
-      else if (neighboursCount == 3 && !Cells[x, y].Alive)
+      else if (neighboursCount == 3 && !Cells[x, y].IsAlive)
       {
-        nextCell.Alive = true;
+        nextCell.IsAlive = true;
       }
 
       return nextCell;
@@ -107,10 +107,12 @@
         for (int x = 0; x < Width; x++)
         {
           // Alive + Age
-          fieldStr += (Convert.ToInt32(Cells[x, y].Alive) + Cells[x, y].Age) + " ";
+          fieldStr += (Convert.ToInt32(Cells[x, y].IsAlive) + Cells[x, y].Age) + " ";
         }
         fieldStr += "\n";
       }
+
+      fieldStr += $"Width: {Width}, Height: {Height}\n";
 
       return fieldStr;
     }
