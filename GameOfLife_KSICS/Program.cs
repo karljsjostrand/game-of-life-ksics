@@ -9,11 +9,11 @@
   {
     static void Main()
     {
-      // Create a Game of Life where about a fifth of the cells are initially alive.
-      var gameOfLife = new GameOfLife(200, 200, .2);
+      // Create a Game of Life where about a tenth of the cells are initially alive.
+      var gol = new GameOfLife(500, 200, .1);
 
       // View and control the game
-      new GameOfLifeController(gameOfLife);
+      var controller = new GameOfLifeController(gol);
     }
   }
 }

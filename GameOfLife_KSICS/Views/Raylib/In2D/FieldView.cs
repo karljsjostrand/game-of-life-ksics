@@ -9,7 +9,7 @@
 
   class FieldView : IView
   {
-    private static Color borderColor = Color.BLACK;
+    private static Color backgroundColor = Color.BLANK;
     private static Color colorWhenAlive = Color.DARKGRAY;
     private static Color colorWhenDead = Color.BLACK;
     private static Color colorWhenYoung = Color.GRAY;
@@ -32,37 +32,37 @@
     public void Draw(IField field)
     {
       Raylib.BeginDrawing();
-      Raylib.ClearBackground(borderColor);
+      Raylib.ClearBackground(backgroundColor);
 
-      var cellWidth = WindowSize.Width / field.Width - 1;
-      var cellheight = WindowSize.Height / field.Height - 1;
+      var borderThickness = 1;
+      var cellWidth = WindowSize.Width / field.Width - borderThickness;
+      var cellheight = WindowSize.Height / field.Height - borderThickness;
 
       for (int y = 0; y < field.Height; y++)
       {
         for (int x = 0; x < field.Width; x++)
         {
-          var posX = x * (WindowSize.Width / field.Width);
-          var posY = y * (WindowSize.Height / field.Height);
+          // For a performance increase don't draw dead cells.
+          if (!field.Cells[x, y].Alive) continue;
 
-          // Color according to alive state of cell.
-          var color = field.Cells[x, y].Alive ? colorWhenAlive : colorWhenDead;
+          var posX = x * (cellWidth + borderThickness);
+          var posY = y * (cellheight + borderThickness);
 
-          if (field.Cells[x, y].Alive && field.Cells[x, y].Age > 0)
+          // Color by alive or age.
+          var color = field.Cells[x, y].Age switch
           {
-            // Color by age.
-            color = field.Cells[x, y].Age switch
-            {
-              1 => colorWhenYoung,
-              2 => colorWhenLessYoung,
-              3 => colorWhenOld,
-              _ => colorWhenOlder,
-            };
-          }
+            0 => colorWhenAlive,
+            1 => colorWhenYoung,
+            2 => colorWhenLessYoung,
+            3 => colorWhenOld,
+            _ => colorWhenOlder,
+          };
 
           // Draw the cell representation.
           Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
         }
       }
+      Raylib.DrawFPS(1, 1);
       Raylib.EndDrawing();
     }
   }

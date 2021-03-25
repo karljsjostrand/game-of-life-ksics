@@ -12,7 +12,6 @@
   class GameOfLifeController
   {
     private static readonly int defaultTargetFps = 10;
-    private static readonly int cellSizeInPixels = 16;
     private static readonly string title = "Game of Life";
     private static readonly string saveFieldStateName = "SavedFieldState";
 
@@ -38,12 +37,13 @@
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
+    private int CellsToWindowSizeRatio = 3;
 
     private GameOfLife GameOfLife { get; set; }
     private IView View { get; set; }
 
-    private int WindowWidth => GameOfLife.Field.Width * cellSizeInPixels;
-    private int WindowHeight => GameOfLife.Field.Height * cellSizeInPixels;
+    private int WindowWidth => GameOfLife.Field.Width * CellsToWindowSizeRatio;
+    private int WindowHeight => GameOfLife.Field.Height * CellsToWindowSizeRatio;
     
     /// <summary>
     /// Create a user interface and a view for a Game of Life.
@@ -53,6 +53,24 @@
     {
       // Set API/Models
       GameOfLife = gameOfLife;
+
+      // Set view
+      View = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
+
+      Start();
+    }
+
+    /// <summary>
+    /// Create a user interface and a view for a Game of Life.
+    /// </summary>
+    /// <param name="gameOfLife">Game of Life API.</param>
+    /// <param name="pixelsPerCell">Width and height of a drawn cell in number of pixels.</param>
+    public GameOfLifeController(GameOfLife gameOfLife, int pixelsPerCell)
+    {
+      // Set API/Models
+      GameOfLife = gameOfLife;
+
+      CellsToWindowSizeRatio = pixelsPerCell;
 
       // Set view
       View = new Views.Raylib.In2D.FieldView(WindowWidth, WindowHeight);
