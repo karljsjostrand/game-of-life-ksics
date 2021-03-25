@@ -74,7 +74,7 @@
 
     public Cell NextCell(int x, int y, int neighboursCount)
     {
-      // TODO: get the neighbours count from here, why call it before and send as parameter?
+      // TODO: Get the neighbours count from here, why call it before and send as parameter?
 
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();
@@ -83,7 +83,7 @@
       if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].IsAlive)
       {
         nextCell.IsAlive = true;
-        nextCell.Age = Cells[x, y].Age + 1; // TODO: what about age going past int.MaxValue?
+        nextCell.Age = Cells[x, y].Age + 1; // TODO: What about age going past int.MaxValue?
       }
       // Bring alive
       else if (neighboursCount == 3 && !Cells[x, y].IsAlive)
@@ -92,6 +92,22 @@
       }
 
       return nextCell;
+    }
+
+    /// <summary>
+    /// Count the total number of cells alive.
+    /// </summary>
+    /// <returns></returns>
+    public int CellsAliveCount()
+    {
+      var count = 0;
+
+      foreach (var cell in Cells)
+      {
+        if (cell.IsAlive) count++;
+      }
+
+      return count;
     }
 
     /// <summary>
@@ -112,7 +128,7 @@
         fieldStr += "\n";
       }
 
-      fieldStr += $"Width: {Width}, Height: {Height}\n";
+      fieldStr += $"Type: {GetType().Name}, Width: {Width}, Height: {Height}, Total living cells: {CellsAliveCount()}\n";
 
       return fieldStr;
     }

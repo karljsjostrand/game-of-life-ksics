@@ -5,7 +5,6 @@
   using System.Collections.Generic;
   using System.Text;
 
-  /// <seealso cref="https://www.youtube.com/watch?v=dMjQ3hA9mEA"/>
   public class LifeUhFindsAWayField : Field, IField
   {
     /// <summary>
