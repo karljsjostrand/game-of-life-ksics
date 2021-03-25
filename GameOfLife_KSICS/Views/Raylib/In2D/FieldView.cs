@@ -1,10 +1,6 @@
 ﻿namespace GameOfLife_KSICS.Views.Raylib.In2D
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Text;
   using GameOfLife_KSICS.Interfaces;
-  using GameOfLife_KSICS.Models;
   using Raylib_cs;
 
   class FieldView : IView

@@ -1,9 +1,6 @@
 ﻿namespace GameOfLife_KSICS
 {
   using GameOfLife_KSICS.Controllers.Raylib;
-  using GameOfLife_KSICS.Models;
-  using GameOfLife_KSICS.Utils.CellFormations;
-  using GameOfLife_KSICS.Utils.Extensions;
 
   class Program
   {

@@ -1,9 +1,6 @@
 ﻿namespace GameOfLife_KSICS.Abstracts
 {
-  using GameOfLife_KSICS.Models;
-  using System;
   using System.Collections.Generic;
-  using System.Text;
 
   /// <summary>
   /// Defines a formation of cells for a two-dimensional field.

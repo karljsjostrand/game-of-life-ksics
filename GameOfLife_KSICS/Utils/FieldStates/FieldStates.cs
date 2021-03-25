@@ -4,8 +4,6 @@
   using GameOfLife_KSICS.Models;
   using GameOfLife_KSICS.Utils.CellFormations;
   using System;
-  using System.Collections.Generic;
-  using System.Text;
   using Utils.Extensions;
 
   class FieldStates

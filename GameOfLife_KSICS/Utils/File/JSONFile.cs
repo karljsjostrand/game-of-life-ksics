@@ -2,11 +2,8 @@
 {
   using Newtonsoft.Json;
   using System;
-  using System.Collections.Generic;
   using System.Diagnostics;
   using System.IO;
-  using System.Text;
-  using Interfaces;
 
   /// <summary>
   /// Saves and loads the state of an object.

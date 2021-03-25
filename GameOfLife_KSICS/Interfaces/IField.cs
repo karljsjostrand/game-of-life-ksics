@@ -1,9 +1,6 @@
 ﻿namespace GameOfLife_KSICS.Interfaces
 {
   using GameOfLife_KSICS.Models;
-  using System;
-  using System.Collections.Generic;
-  using System.Text;
 
   public interface IField
   {

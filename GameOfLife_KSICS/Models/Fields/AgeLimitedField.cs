@@ -1,9 +1,6 @@
 ﻿namespace GameOfLife_KSICS.Models
 {
   using GameOfLife_KSICS.Interfaces;
-  using System;
-  using System.Collections.Generic;
-  using System.Text;
 
   class AgeLimitedField : Field, IField
   {

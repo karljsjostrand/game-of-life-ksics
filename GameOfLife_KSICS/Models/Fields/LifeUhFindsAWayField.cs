@@ -2,8 +2,6 @@
 {
   using GameOfLife_KSICS.Interfaces;
   using System;
-  using System.Collections.Generic;
-  using System.Text;
 
   public class LifeUhFindsAWayField : Field, IField
   {
