@@ -37,7 +37,7 @@
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
-    private int CellsToWindowSizeRatio = 12; // TODO: Window size width incorrect when <= 7, with a 15x35 field, and when <= 12 with 9x24
+    private int CellsToWindowSizeRatio = 12;
 
     private GameOfLife GameOfLife { get; set; }
     private IView View { get; set; }

@@ -57,8 +57,10 @@
     /// This position's count of living neighbours.
     /// </param>
     /// <returns>Next generations cell at this position.</returns>
-    public new Cell NextCell(int x, int y, int neighboursCount)
+    public new Cell NextCell(int x, int y)
     {
+      var neighboursCount = NeighboursCount(x, y);
+
       // For Under- or overpopulation, don't need set age nor is it alive.
       var nextCell = new Cell();
       var rnd = new Random();
