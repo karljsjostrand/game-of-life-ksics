@@ -157,14 +157,16 @@
     /// </param>
     private void LoadFromFile(string fileName)
     {
-      var jsonFile = new JSONFile<IField> { FileName = fileName };
+      var jsonFile = new JSONFile<Field> { FileName = fileName };
 
       // Try to load file.
       if (jsonFile.Load())
       {
+        var field = jsonFile.Data;
+
         Setup(
           new GameOfLife(
-            jsonFile.Data
+            field
             ));
 
         // Resize window.

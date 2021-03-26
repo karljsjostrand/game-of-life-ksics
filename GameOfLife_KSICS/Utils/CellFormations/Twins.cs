@@ -12,7 +12,7 @@
       // 1111
       // 1001
       // 1111
-      // coordinates for a flower formation
+      // coordinates for a twins formation
       CellPositions.AddRange(
         new List<(int x, int y)>()
         {

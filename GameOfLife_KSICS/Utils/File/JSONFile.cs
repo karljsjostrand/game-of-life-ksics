@@ -27,7 +27,6 @@
     /// Name of file, file extension excluded.
     /// </summary>
     public string FileName { get; set; }
-      = $"{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day} {DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
 
     /// <summary>
     /// The file extension part of the full path.
@@ -99,7 +98,10 @@
 
       try
       {
-        Data = JsonConvert.DeserializeObject<T>(data);
+        Data = JsonConvert.DeserializeObject<T>
+        (
+          data
+        );
       }
       catch (Exception e)
       {
