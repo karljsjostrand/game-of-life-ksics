@@ -47,10 +47,7 @@
     /// </summary>
     /// <param name="x">Horizontal position on the field.</param>
     /// <param name="y">Vertical position on the field.</param>
-    /// <param name="neighboursCount">
-    /// This position's count of living neighbours.
-    /// </param>
     /// <returns>Next generations cell at this position.</returns>
-    public Cell NextCell(int x, int y, int neighboursCount);
+    public Cell NextCell(int x, int y);
   }
 }

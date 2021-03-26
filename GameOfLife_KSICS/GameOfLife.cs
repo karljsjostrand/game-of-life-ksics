@@ -88,8 +88,6 @@
       {
         Field = jsonFile.Data;
       }
-
-      
     }
 
     /// <summary>
@@ -103,8 +101,7 @@
       {
         for (int x = 0; x < Field.Width; x++)
         {
-          var neighbourCount = Field.NeighboursCount(x, y);
-          Field.NextCells[x, y] = Field.NextCell(x, y, neighbourCount);
+          Field.NextCells[x, y] = Field.NextCell(x, y);
         }
       }
 

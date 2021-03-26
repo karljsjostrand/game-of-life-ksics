@@ -69,9 +69,9 @@
       return Cells[(x + Width) % Width, (y + Height) % Height].IsAlive;
     }
 
-    public Cell NextCell(int x, int y, int neighboursCount)
+    public Cell NextCell(int x, int y)
     {
-      // TODO: Get the neighbours count from here, why call it before and send as parameter?
+      var neighboursCount = NeighboursCount(x, y);
 
       // For Under- or overpopulation, don't need set age nor is it alive
       var nextCell = new Cell();

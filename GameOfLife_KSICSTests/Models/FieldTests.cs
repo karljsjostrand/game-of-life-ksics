@@ -214,13 +214,29 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void NextCellTest_ShouldBringAlive_WhenThreeNeighboursAndDeadInCurrentGen()
     {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
+      var pos = centeredCellPosition;
+      var x = pos.x;
+      var y = pos.y;
 
+      // 3 neighbours pos
+      var neighboursPos = new List<(int x, int y)>() 
+      {
+        { (pos.x - 1, pos.y - 1) },
+        { (pos.x - 1, pos.y) },
+        { (pos.x, pos.y - 1) },
+      };
+
+      // Set neighbours alive
+      foreach (var (neighbourX, neighbourY) in neighboursPos)
+      {
+        field.Cells[neighbourX, neighbourY].IsAlive = true;
+      }
+
+      // Set position is currently dead
       field.Cells[x, y].IsAlive = false;
 
-      Assert.IsTrue(field.NextCell(x, y, 3).IsAlive, "Cell is not alive.");
+      // Assert next cell is alive
+      Assert.IsTrue(field.NextCell(x, y).IsAlive, "Cell is not alive.");
     }
 
     /// <summary>
@@ -229,13 +245,28 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void NextCellTest_ShouldKeepAlive_WhenTwoNeighboursAndAliveInCurrentGen()
     {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
+      var pos = centeredCellPosition;
+      var x = pos.x;
+      var y = pos.y;
 
+      // 2 neighbours pos
+      var neighboursPos = new List<(int x, int y)>()
+      {
+        { (pos.x - 1, pos.y - 1) },
+        { (pos.x - 1, pos.y) },
+      };
+
+      // Set neighbours alive
+      foreach (var (neighbourX, neighbourY) in neighboursPos)
+      {
+        field.Cells[neighbourX, neighbourY].IsAlive = true;
+      }
+
+      // Set position is currently alive
       field.Cells[x, y].IsAlive = true;
 
-      Assert.IsTrue(field.NextCell(x, y, 2).IsAlive, "Cell is not alive.");
+      // Assert next cell is alive
+      Assert.IsTrue(field.NextCell(x, y).IsAlive, "Cell is not alive.");
     }
 
     /// <summary>
@@ -244,13 +275,28 @@ namespace GameOfLife_KSICS.Models.Tests
     [Test()]
     public void NextCellTest_ShouldNotBringAlive_WhenTwoNeighboursAndDeadInCurrentGen()
     {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
+      var pos = centeredCellPosition;
+      var x = pos.x;
+      var y = pos.y;
 
+      // 2 neighbours pos
+      var neighboursPos = new List<(int x, int y)>()
+      {
+        { (pos.x - 1, pos.y - 1) },
+        { (pos.x - 1, pos.y) },
+      };
+
+      // Set neighbours alive
+      foreach (var (neighbourX, neighbourY) in neighboursPos)
+      {
+        field.Cells[neighbourX, neighbourY].IsAlive = true;
+      }
+
+      // Set position is currently dead
       field.Cells[x, y].IsAlive = false;
 
-      Assert.IsFalse(field.NextCell(x, y, 2).IsAlive, "Cell is alive.");
+      // Assert next cell is dead
+      Assert.IsFalse(field.NextCell(x, y).IsAlive, "Cell is alive.");
     }
 
     /// <summary>
@@ -258,17 +304,26 @@ namespace GameOfLife_KSICS.Models.Tests
     /// </summary>
     /// <param name="neighboursCount">Living neighbouring cells count.</param>
     [Test()]
-    [TestCase(int.MinValue)]
-    [TestCase(-1)]
-    [TestCase(0)]
-    [TestCase(1)]
-    public void NextCellTest_ShouldSetToDead_WhenLessThanTwoNeighbours(int neighboursCount)
+    public void NextCellTest_ShouldSetToDead_WhenLessThanTwoNeighbours()
     {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
+      var pos = centeredCellPosition;
+      var x = pos.x;
+      var y = pos.y;
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).IsAlive, "Cell is alive.");
+      // 1 neighbour pos
+      var neighboursPos = new List<(int x, int y)>()
+      {
+        { (pos.x - 1, pos.y - 1) },
+      };
+
+      // Set neighbours alive
+      foreach (var (neighbourX, neighbourY) in neighboursPos)
+      {
+        field.Cells[neighbourX, neighbourY].IsAlive = true;
+      }
+
+      // Assert next cell is dead
+      Assert.IsFalse(field.NextCell(x, y).IsAlive, "Cell is alive.");
     }
 
     /// <summary>
@@ -276,18 +331,29 @@ namespace GameOfLife_KSICS.Models.Tests
     /// </summary>
     /// <param name="neighboursCount">Living neighbouring cells count.</param>
     [Test()]
-    [TestCase(4)]
-    [TestCase(5)]
-    [TestCase(int.MaxValue)]
-    public void NextCellTest_ShouldSetToDead_WhenMoreThanThreeNeighbours(int neighboursCount)
+    public void NextCellTest_ShouldSetToDead_WhenMoreThanThreeNeighbours()
     {
-      var position = centeredCellPosition;
-      var x = position.x;
-      var y = position.y;
+      var pos = centeredCellPosition;
+      var x = pos.x;
+      var y = pos.y;
 
-      field.NextCell(x, y, neighboursCount);
+      // 4 neighbours pos
+      var neighboursPos = new List<(int x, int y)>()
+      {
+        { (pos.x - 1, pos.y - 1) },
+        { (pos.x - 1, pos.y) },
+        { (pos.x, pos.y - 1) },
+        { (pos.x + 1, pos.y + 1) },
+      };
 
-      Assert.IsFalse(field.NextCell(x, y, neighboursCount).IsAlive, "Cell is alive.");
+      // Set neighbours alive
+      foreach (var (neighbourX, neighbourY) in neighboursPos)
+      {
+        field.Cells[neighbourX, neighbourY].IsAlive = true;
+      }
+
+      // Assert next cell is dead
+      Assert.IsFalse(field.NextCell(x, y).IsAlive, "Cell is alive.");
     }
   }
 }

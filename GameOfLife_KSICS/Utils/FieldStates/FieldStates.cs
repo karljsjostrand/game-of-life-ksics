@@ -52,7 +52,6 @@
       field.AddCellFormation(new Twins(), (24, 24));
       field.AddCellFormation(new Beacon(), (1, 1));
 
-
       return (field, $"Field with cells that die after an age of {field.AgeLimit}.");
     }
   }
