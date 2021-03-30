@@ -5,7 +5,7 @@
 
   class FieldView : IView
   {
-    private static Color ThemeColor = new Color(150, 255, 150, 255);
+    private static Color ThemeColor = Color.GREEN;
 
     private static Color backgroundColor = Color.BLANK;
     private static Color colorWhenAlive = Color.DARKGRAY;
@@ -47,15 +47,12 @@
           var posX = x * (cellWidth + borderThickness);
           var posY = y * (cellheight + borderThickness);
 
-          // Color by alive or age.
+          // Color by age. Dimmed to bright to dimmed.
           var color = field.Cells[x, y].Age switch
           {
-            0 => colorWhenAlive,
-            1 => colorWhenYoung,
-            2 => colorWhenLessYoung,
-            3 => colorWhenOld,
-            var i when (3 < i && i < 240) => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - i),
-            _ => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - 240),
+            var i when (0 <= i && i <= 9) => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, 30 + (i * 25)),
+            var i when (9 < i && i < 19) => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - ((i - 9) * 25)),
+            _ => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - 225),
           };
 
           // Draw the cell representation.
