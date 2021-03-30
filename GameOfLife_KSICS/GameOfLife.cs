@@ -10,7 +10,7 @@
     /// <summary>
     /// Holds most the games states, most importantly, the cells, 
     /// and the methods that dictates how they are changed on new 
-    /// generations. 
+    /// generations.
     /// </summary>
     public IField Field { get; private set; }
 

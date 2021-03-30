@@ -13,11 +13,11 @@
     /// <param name="pos">Cell formation is positioned with it's upper left corner here.</param>
     public static void AddCellFormation(this IField field, CellFormation cf, (int x, int y) pos)
     {
-      foreach (var cell in cf.CellPositions)
+      foreach (var (cellX, cellY) in cf.CellPositions)
       {
         field.Cells[
-          (pos.x + cell.x + field.Width) % field.Width, 
-          (pos.y + cell.y + field.Height) % field.Height
+          (pos.x + cellX + field.Width) % field.Width, 
+          (pos.y + cellY + field.Height) % field.Height
           ].IsAlive = true;
       }
     }

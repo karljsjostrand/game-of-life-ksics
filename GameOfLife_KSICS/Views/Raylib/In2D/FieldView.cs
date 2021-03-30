@@ -5,6 +5,8 @@
 
   class FieldView : IView
   {
+    private static Color ThemeColor = new Color(111, 255, 111, 250);
+
     private static Color backgroundColor = Color.BLANK;
     private static Color colorWhenAlive = Color.DARKGRAY;
     private static Color colorWhenDead = Color.BLACK;
@@ -31,8 +33,8 @@
       Raylib.ClearBackground(backgroundColor);
 
       var borderThickness = 1;
-      var cellWidth = WindowSize.Width / field.Width - borderThickness;
-      var cellheight = WindowSize.Height / field.Height - borderThickness;
+      var cellWidth = (WindowSize.Width / field.Width) - borderThickness;
+      var cellheight = (WindowSize.Height / field.Height) - borderThickness;
 
       for (int y = 0; y < field.Height; y++)
       {
@@ -51,7 +53,16 @@
             1 => colorWhenYoung,
             2 => colorWhenLessYoung,
             3 => colorWhenOld,
-            _ => colorWhenOlder,
+            var i when (3  < i && i <= 10) => new Color(111, 255, 111, 250),
+            var i when (10 < i && i <= 20) => new Color(111, 255, 111, 225),
+            var i when (20 < i && i <= 30) => new Color(111, 255, 111, 200),
+            var i when (30 < i && i <= 40) => new Color(111, 255, 111, 175),
+            var i when (40 < i && i <= 50) => new Color(111, 255, 111, 150),
+            var i when (50 < i && i <= 60) => new Color(111, 255, 111, 125),
+            var i when (60 < i && i <= 70) => new Color(111, 255, 111, 100),
+            var i when (70 < i && i <= 80) => new Color(111, 255, 111, 75),
+            var i when (80 < i && i <= 90) => new Color(111, 255, 111, 50),
+            _ => new Color(111, 255, 111, 25),
           };
 
           // Draw the cell representation.

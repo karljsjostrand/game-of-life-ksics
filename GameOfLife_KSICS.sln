@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife_KSICS", "GameOfLife_KSICS\GameOfLife_KSICS.csproj", "{56C9E324-79AA-43A3-B186-8B2D915DFBE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife_KSICSTests", "GameOfLife_KSICSTests\GameOfLife_KSICSTests.csproj", "{46972D3E-ADEF-4434-A26C-CECA1F6CD95F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLife_KSICSTests", "GameOfLife_KSICSTests\GameOfLife_KSICSTests.csproj", "{46972D3E-ADEF-4434-A26C-CECA1F6CD95F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE778EE4-D306-497A-95C6-3B57FFB470B5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

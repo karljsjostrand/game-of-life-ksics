@@ -6,7 +6,7 @@
   using System;
   using Utils.Extensions;
 
-  class FieldStates
+  static class FieldStates
   {
     /// <summary>
     /// Creates a field with a beacon and a glider formation on collision course.

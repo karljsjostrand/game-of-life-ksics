@@ -73,7 +73,7 @@
     {
       var neighboursCount = NeighboursCount(x, y);
 
-      // For Under- or overpopulation, don't need set age nor is it alive
+      // For under- or overpopulation, don't need set age nor is it alive.
       var nextCell = new Cell();
       
       // Stay alive

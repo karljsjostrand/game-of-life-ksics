@@ -37,7 +37,7 @@
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
-    private int CellsToWindowSizeRatio = 12;
+    private readonly int CellsToWindowSizeRatio = 12;
 
     private GameOfLife GameOfLife { get; set; }
     private IView View { get; set; }
@@ -227,8 +227,6 @@
     {
       if (Raylib.IsKeyPressed(KeyboardKey.KEY_F5) || Raylib.IsKeyPressed(KeyboardKey.KEY_S))
       {
-        var type = GameOfLife.Field.GetType();
-
         // Create a field file and save it.
         var jsonFile = new JSONFile<IField>
         {

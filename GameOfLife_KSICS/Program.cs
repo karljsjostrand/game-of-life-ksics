@@ -2,7 +2,7 @@
 {
   using GameOfLife_KSICS.Controllers.Raylib;
 
-  class Program
+  static class Program
   {
     static void Main()
     {
