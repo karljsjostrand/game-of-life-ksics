@@ -5,7 +5,7 @@
 
   class FieldView : IView
   {
-    private static Color ThemeColor = Color.GREEN;
+    private static Color CellColor = Color.GREEN;
 
     private static Color backgroundColor = Color.BLANK;
     private static Color colorWhenAlive = Color.DARKGRAY;
@@ -47,13 +47,15 @@
           var posX = x * (cellWidth + borderThickness);
           var posY = y * (cellheight + borderThickness);
 
-          // Color by age. Dimmed to bright to dimmed.
-          var color = field.Cells[x, y].Age switch
+          // Color alpha by age. Dimmed to bright to dimmed.
+          var alpha = field.Cells[x, y].Age switch
           {
-            var i when (0 <= i && i <= 9) => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, 30 + (i * 25)),
-            var i when (9 < i && i < 19) => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - ((i - 9) * 25)),
-            _ => new Color(ThemeColor.r, ThemeColor.g, ThemeColor.b, ThemeColor.a - 225),
+            var i when (0 <= i && i <= 9) => 30 + (i * 25),
+            var i when (9 < i && i < 19) => CellColor.a - ((i - 9) * 25),
+            _ => CellColor.a - 225
           };
+
+          var color = new Color(CellColor.r, CellColor.g, CellColor.b, alpha);
 
           // Draw the cell representation.
           Raylib.DrawRectangle(posX, posY, cellWidth, cellheight, color);
