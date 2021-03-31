@@ -11,6 +11,12 @@
     public int HighTotalAge { get; set; } = 64;
 
     /// <summary>
+    /// Chance for a new life in a cell when total age of neighbours is high enough.
+    /// Default is .01, yielding a 1% chance.
+    /// </summary>
+    public double ChanceForNewLife { get; set; } = .01;
+
+    /// <summary>
     /// Create a field with the given width and height. It's rules 
     /// differs from the standard field in such way that a cell has a
     /// chance to become alive with only 2 neighbours if the total 
@@ -32,7 +38,7 @@
     {
       var totalAge = 0;
 
-      // Check surrounding cells alive states.
+      // Count surrounding cells ages.
       for (int i = -1; i < 2; i++)
       {
         for (int j = -1; j < 2; j++)
@@ -64,8 +70,6 @@
       // For Under- or overpopulation, don't need set age nor is it alive.
       var nextCell = new Cell();
       var rnd = new Random();
-      var totalHighAge = 64;
-      var chance = .01;
 
       // Stay alive.
       if ((neighboursCount == 2 || neighboursCount == 3) && Cells[x, y].IsAlive)
@@ -78,10 +82,10 @@
       {
         nextCell.IsAlive = true;
       }
-      // 1% chance to bring alive when 2 neighbours and total age is high.
-      else if (neighboursCount == 2 && !Cells[x, y].IsAlive && GetTotalAgeOfNeighbours(x, y) > totalHighAge)
+      // Chance to bring alive when 2 neighbours and total age is high.
+      else if (neighboursCount == 2 && !Cells[x, y].IsAlive && GetTotalAgeOfNeighbours(x, y) > HighTotalAge)
       {
-        nextCell.IsAlive = rnd.NextDouble() <= chance;
+        nextCell.IsAlive = rnd.NextDouble() <= ChanceForNewLife;
       }
 
       return nextCell;

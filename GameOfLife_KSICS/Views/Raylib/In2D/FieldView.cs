@@ -5,15 +5,9 @@
 
   class FieldView : IView
   {
-    private static Color CellColor = Color.GREEN;
+    public Color CellColor { get; set; } = Color.RAYWHITE;
 
     private static Color backgroundColor = Color.BLANK;
-    private static Color colorWhenAlive = Color.DARKGRAY;
-    private static Color colorWhenDead = Color.BLACK;
-    private static Color colorWhenYoung = Color.GRAY;
-    private static Color colorWhenLessYoung = Color.LIGHTGRAY;
-    private static Color colorWhenOld = Color.WHITE;
-    private static Color colorWhenOlder = Color.GOLD;
 
     private const int borderThickness = 2;
 

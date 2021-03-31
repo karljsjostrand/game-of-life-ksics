@@ -13,5 +13,10 @@
     /// </summary>
     /// <param name="field">Field to draw.</param>
     public void Draw(IField field);
+
+    /// <summary>
+    /// Gets and sets the color of the rectangle representing the cell.
+    /// </summary>
+    public Raylib_cs.Color CellColor { get; set; }
   }
 }

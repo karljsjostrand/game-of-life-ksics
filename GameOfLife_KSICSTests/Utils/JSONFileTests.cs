@@ -73,7 +73,7 @@ namespace GameOfLife_KSICS.Utils.Tests
       var expected = jSONSaveFileExpected.Data.ToString();
       var actual = jSONLoadFileActual.Data.ToString();
 
-      Assert.AreEqual(expected, actual);
+      Assert.AreEqual(expected, actual, "Field state loaded not equal to saved.");
 
       File.Delete(fullPath);
     }

@@ -26,6 +26,7 @@
       { ("Tab/Right", "step to next gen") },
       { ("      1-2", "hold to slow down") },
       { ("      3-4", "hold to speed up") },
+      { ("        C", "to cycle cell color") },
     };
 
     private readonly Dictionary<int, (IField field, string description)> predefinedFieldStates = new Dictionary<int, (IField, string)>()
@@ -34,6 +35,20 @@
       { 2, FieldStates.RandomizedChanceField() },
       { 3, FieldStates.AgeLimitedField() },
     };
+
+    private readonly List<Color> cellColors = new List<Color>()
+    {
+      { Color.RAYWHITE },
+      { Color.SKYBLUE },
+      { Color.DARKPURPLE },
+      { Color.PINK },
+      { Color.RED },
+      { Color.GOLD },
+      { Color.GREEN },
+      { Color.LIME },
+    };
+
+    private int curCellColor = 1;
 
     private bool update = true;
     private int targetFps = defaultTargetFps;
@@ -146,6 +161,17 @@
 
       // Sets Update frequency.
       HandleUserSetsUpdateFrequency();
+
+      // Sets cell color.
+      HandleUserSetsCellColor();
+    }
+
+    private void HandleUserSetsCellColor()
+    {
+      if (Raylib.IsKeyPressed(KeyboardKey.KEY_C))
+      {
+        View.CellColor = cellColors[curCellColor++ % cellColors.Count];
+      }
     }
 
     /// <summary>
