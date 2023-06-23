@@ -122,6 +122,9 @@
         // View
         View.Draw(GameOfLife.Field);
 
+        // Update title
+        Raylib.SetWindowTitle(title + " - Cells count: " + GameOfLife.Field.CellsAliveCount());
+
         // User input
         HandleUserInput();
 
