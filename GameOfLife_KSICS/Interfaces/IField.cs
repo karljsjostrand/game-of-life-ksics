@@ -49,5 +49,11 @@
     /// <param name="y">Vertical position on the field.</param>
     /// <returns>Next generations cell at this position.</returns>
     public Cell NextCell(int x, int y);
+
+    /// <summary>
+    /// Get count of cells with state alive as true in fields current state. 
+    /// </summary>
+    /// <returns>Count of cells alive</returns>
+    public int CellsAliveCount();
   }
 }
